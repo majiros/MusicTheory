@@ -47,9 +47,16 @@ jobs:
           dotnet tool install -g dotnet-reportgenerator-globaltool
           echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
 
+      - name: Debug PATH and coverage files
+        run: |
+          which dotnet || true
+          echo "PATH=$PATH"
+          ls -la $HOME/.dotnet/tools || true
+          ls -R Tests/MusicTheory.Tests/TestResults || true
+
       - name: Generate coverage report (Html/XmlSummary/Badges)
         run: |
-          reportgenerator \
+          "$HOME/.dotnet/tools/reportgenerator" \
             -reports:Tests/MusicTheory.Tests/TestResults/**/coverage.cobertura.xml \
             -targetdir:Tests/MusicTheory.Tests/TestResults/coverage-report \
             -reporttypes:Html;XmlSummary;Badges
