@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="155" height="20" role="img" aria-label="Coverage: 80%">
+  <title>Coverage: 80%</title>
+  <linearGradient id="g" x2="0" y2="100%">
+    <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+  <mask id="m"><rect width="155" height="20" rx="3" fill="#fff"/></mask>
+  <g mask="url(#m)">
+    <rect width="90" height="20" fill="#555"/>
+    <rect x="90" width="65" height="20" fill="#4c1"/>
+    <rect width="155" height="20" fill="url(#g)"/>
+  </g>
+  <g fill="#fff" text-anchor="middle" font-family="Verdana, DejaVu Sans, sans-serif" font-size="11">
+    <text x="46" y="14">Coverage</text>
+    <text x="121" y="14">80%</text>
+  </g>
+</svg>

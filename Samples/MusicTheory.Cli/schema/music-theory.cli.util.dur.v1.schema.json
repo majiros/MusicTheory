@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:music-theory:cli:schema:util:dur:v1",
+  "$comment": "MusicTheory CLI utility schema: --durJson (stable URN)",
+  "title": "Duration Utility Output (v1)",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "input": { "type": "string" },
+      "ticks": { "type": "integer", "minimum": 0 },
+      "fraction": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "numerator": { "type": "integer", "minimum": 1 },
+          "denominator": { "type": "integer", "minimum": 1 }
+        },
+        "required": ["numerator", "denominator"]
+      },
+      "notation": { "type": "string" }
+    },
+    "required": ["input", "ticks", "fraction", "notation"]
+  }
+}

@@ -1,0 +1,70 @@
+name: coverage-pages
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build-and-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build (Release)
+        run: dotnet build -c Release --nologo
+
+      - name: Test (coverage stable)
+        env:
+          COMPlus_TieredCompilation: '0'
+          COMPlus_ReadyToRun: '0'
+        run: |
+          dotnet test -c Release --nologo --no-build \
+            --results-directory Tests/MusicTheory.Tests/TestResults \
+            --collect 'XPlat Code Coverage' -- \
+            DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
+
+      - name: Install ReportGenerator
+        run: |
+          dotnet tool install -g dotnet-reportgenerator-globaltool
+          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Generate coverage report (Html/XmlSummary/Badges)
+        run: |
+          reportgenerator \
+            -reports:Tests/MusicTheory.Tests/TestResults/**/coverage.cobertura.xml \
+            -targetdir:Tests/MusicTheory.Tests/TestResults/coverage-report \
+            -reporttypes:Html;XmlSummary;Badges
+
+      - name: Upload Pages artifact (coverage-report)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: Tests/MusicTheory.Tests/TestResults/coverage-report
+
+  deploy:
+    needs: build-and-coverage
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+

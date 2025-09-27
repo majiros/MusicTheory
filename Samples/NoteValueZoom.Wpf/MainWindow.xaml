@@ -1,0 +1,13 @@
+<Window x:Class="NoteValueZoom.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="NoteValue Zoom Sample" Height="360" Width="420">
+  <DockPanel Margin="10">
+    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0 0 0 8">
+      <Button Content="-" Width="40" Margin="0 0 6 0" Click="ZoomOut_Click"/>
+      <Button Content="+" Width="40" Click="ZoomIn_Click"/>
+      <TextBlock Margin="10 0 0 0" VerticalAlignment="Center" Text="Select items and press +/-"/>
+    </StackPanel>
+    <ListBox Name="List" SelectionMode="Extended"/>
+  </DockPanel>
+  </Window>

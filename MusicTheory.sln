@@ -1,0 +1,50 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicTheory", "MusicTheory.csproj", "{710FB034-0E97-DD91-43B9-43706A0A2F4F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0AFBEFAB-6922-4089-AAD1-D30A3C63DB50}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicTheory.Tests", "Tests\MusicTheory.Tests\MusicTheory.Tests.csproj", "{6DA07914-2EE5-4082-82DC-2434163EF681}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicTheory.Benchmarks", "Benchmarks\MusicTheory.Benchmarks.csproj", "{3F4B4A9B-3C3D-4B7F-9EF5-1234567890AB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{9B3E2C35-6C0A-4F1E-B8C2-5D2B5E1D7F9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicTheory.Cli", "Samples\MusicTheory.Cli\MusicTheory.Cli.csproj", "{A6F3C2B1-6E45-4FB0-9B5A-73AF1D4C9E20}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{710FB034-0E97-DD91-43B9-43706A0A2F4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{710FB034-0E97-DD91-43B9-43706A0A2F4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{710FB034-0E97-DD91-43B9-43706A0A2F4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{710FB034-0E97-DD91-43B9-43706A0A2F4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DA07914-2EE5-4082-82DC-2434163EF681}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DA07914-2EE5-4082-82DC-2434163EF681}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DA07914-2EE5-4082-82DC-2434163EF681}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DA07914-2EE5-4082-82DC-2434163EF681}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F4B4A9B-3C3D-4B7F-9EF5-1234567890AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F4B4A9B-3C3D-4B7F-9EF5-1234567890AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F4B4A9B-3C3D-4B7F-9EF5-1234567890AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F4B4A9B-3C3D-4B7F-9EF5-1234567890AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6F3C2B1-6E45-4FB0-9B5A-73AF1D4C9E20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6F3C2B1-6E45-4FB0-9B5A-73AF1D4C9E20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6F3C2B1-6E45-4FB0-9B5A-73AF1D4C9E20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6F3C2B1-6E45-4FB0-9B5A-73AF1D4C9E20}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {452D5FF2-8164-4263-BF97-40ACF4E3ACF4}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6DA07914-2EE5-4082-82DC-2434163EF681} = {0AFBEFAB-6922-4089-AAD1-D30A3C63DB50}
+		{A6F3C2B1-6E45-4FB0-9B5A-73AF1D4C9E20} = {9B3E2C35-6C0A-4F1E-B8C2-5D2B5E1D7F9A}
+	EndGlobalSection
+EndGlobal

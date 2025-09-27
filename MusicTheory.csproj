@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <NoWarn>$(NoWarn);CA2255</NoWarn>
+  </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="Tests\**\*.cs" />
+      <None Include="Tests\**\*.cs" />
+    <Compile Remove="Benchmarks\**\*.cs" />
+    <None Include="Benchmarks\**\*.cs" />
+  <Compile Remove="Samples\**\*.cs" />
+  <None Include="Samples\**\*.cs" />
+    </ItemGroup>
+
+</Project>

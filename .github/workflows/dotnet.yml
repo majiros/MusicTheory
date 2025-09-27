@@ -1,0 +1,104 @@
+name: .NET CI (manual)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Cache NuGet
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build (Release)
+        run: dotnet build -c Release --nologo
+
+      - name: Test (Release)
+        run: dotnet test -c Release --nologo --no-build --logger "trx;LogFileName=test_results.trx"
+
+      - name: Upload TRX (build-test)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trx-${{ runner.os }}
+          path: |
+            **/TestResults/*.trx
+
+  coverage:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build (Release)
+        run: dotnet build -c Release --nologo
+
+      - name: Test + Coverage (Cobertura)
+        shell: pwsh
+        run: |
+          $env:COMPlus_TieredCompilation = '0'
+          $env:COMPlus_ReadyToRun = '0'
+          dotnet test -c Release --nologo --no-build `
+            --results-directory Tests/MusicTheory.Tests/TestResults `
+            --collect "XPlat Code Coverage" -- `
+            DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
+
+      - name: Upload TRX (coverage)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trx-coverage
+          path: |
+            **/TestResults/*.trx
+
+      - name: Upload coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-cobertura
+          path: Tests/MusicTheory.Tests/TestResults/**/coverage.cobertura.xml
+
+      - name: Install ReportGenerator
+        shell: pwsh
+        run: |
+          dotnet tool install -g dotnet-reportgenerator-globaltool
+          reportgenerator -reports:Tests/MusicTheory.Tests/TestResults/**/coverage.cobertura.xml `
+            -targetdir:Tests/MusicTheory.Tests/TestResults/coverage-report -reporttypes:Html
+          reportgenerator -reports:Tests/MusicTheory.Tests/TestResults/**/coverage.cobertura.xml `
+            -targetdir:Tests/MusicTheory.Tests/TestResults/coverage-report -reporttypes:XmlSummary
+
+      - name: Upload coverage HTML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html
+          path: Tests/MusicTheory.Tests/TestResults/coverage-report/**
+
+      - name: Enforce coverage threshold (70%)
+        shell: pwsh
+        run: |
+          ./Scripts/CheckCoverage.ps1 -Threshold 70 -SummaryPath 'Tests/MusicTheory.Tests/TestResults/coverage-report/Summary.xml' -CoberturaRoot 'Tests/MusicTheory.Tests/TestResults'

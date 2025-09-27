@@ -1,0 +1,135 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:music-theory:cli:schema:v1",
+  "$comment": "MusicTheory CLI schema v1 (stable URN)",
+  "title": "MusicTheory CLI Output (v1)",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": { "type": "integer", "const": 1 },
+    "key": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tonic": { "type": "integer", "minimum": 0, "maximum": 11 },
+        "mode": { "type": "string", "enum": ["major", "minor"] }
+      },
+      "required": ["tonic", "mode"]
+    },
+    "options": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "hide64": { "type": "boolean" },
+        "cad64Dominant": { "type": "boolean" },
+        "v9": { "type": "string", "enum": ["V9", "V7(9)"] },
+        "maj7Inv": { "type": "boolean" },
+        "preferMixture7": { "type": "boolean" },
+        "enforceN6": { "type": "boolean" },
+        "tuplets": { "type": "string", "enum": ["star", "paren"] },
+        "preset": { "type": "string", "enum": ["stable", "permissive"] }
+      },
+      "required": ["hide64", "cad64Dominant", "v9", "maj7Inv", "preferMixture7", "enforceN6", "tuplets"]
+    },
+    "chords": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "index": { "type": "integer", "minimum": 0 },
+          "roman": { "type": "string" },
+          "function": { "type": "string" },
+          "warnings": { "type": "array", "items": { "type": "string" } },
+          "errors": { "type": "array", "items": { "type": "string" } }
+        },
+        "required": ["index", "roman", "function"]
+      }
+    },
+    "cadences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "indexFrom": { "type": "integer", "minimum": 0 },
+          "type": { "type": "string" },
+          "pac": { "type": "boolean" },
+          "cad64": { "type": "boolean" },
+          "sixFour": { "type": "string" }
+        },
+        "required": ["indexFrom", "type", "pac", "cad64", "sixFour"]
+      }
+    },
+    "estimator": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "window": { "type": "integer", "minimum": 0 },
+        "minSwitch": { "type": "integer", "minimum": 0 },
+        "prevBias": { "type": "integer" },
+        "initBias": { "type": "integer" },
+        "switchMargin": { "type": "integer" },
+        "outPenalty": { "type": "integer" }
+      },
+      "required": ["window", "minSwitch", "prevBias", "initBias", "switchMargin", "outPenalty"]
+    },
+    "keys": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "index": { "type": "integer", "minimum": 0 },
+          "key": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "tonic": { "type": "integer", "minimum": 0, "maximum": 11 },
+              "mode": { "type": "string", "enum": ["major", "minor"] }
+            },
+            "required": ["tonic", "mode"]
+          }
+        },
+        "required": ["index", "key"]
+      }
+    },
+    "segments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "start": { "type": "integer", "minimum": 0 },
+          "end": { "type": "integer", "minimum": 0 },
+          "key": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "tonic": { "type": "integer", "minimum": 0, "maximum": 11 },
+              "mode": { "type": "string", "enum": ["major", "minor"] }
+            },
+            "required": ["tonic", "mode"]
+          },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+        },
+        "required": ["start", "end", "key", "confidence"]
+      }
+    },
+    "trace": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "index": { "type": "integer", "minimum": 0 },
+          "max": { "type": "integer", "minimum": 0 },
+          "second": { "type": "integer", "minimum": 0 },
+          "margin": { "type": "number", "minimum": 0, "maximum": 1 }
+        },
+        "required": ["index", "max", "second", "margin"]
+      }
+    }
+  },
+  "required": ["version", "key", "options", "chords", "cadences"]
+}

@@ -1,0 +1,33 @@
+name: Benchmarks
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-benchmarks:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore "MusicTheory.sln"
+
+      - name: Build (Release)
+        run: dotnet build "MusicTheory.sln" -c Release --nologo --no-restore
+
+      - name: Run Benchmarks
+        run: dotnet run --project Benchmarks/MusicTheory.Benchmarks.csproj -c Release
+
+      - name: Upload Benchmark Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: BenchmarkDotNet.Artifacts
+          path: |
+            BenchmarkDotNet.Artifacts/**
+            Benchmarks/bin/Release/**

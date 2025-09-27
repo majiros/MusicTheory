@@ -1,0 +1,98 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-test-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Restore
+        run: dotnet restore
+      - name: Build (Release)
+        run: dotnet build -c Release --nologo
+      - name: Test (Release)
+        run: dotnet test -c Release --nologo --no-build
+
+  build-test-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build (Release)
+        run: dotnet build -c Release --nologo --no-restore
+
+      - name: Test (TRX + Coverage, stable env, retry once)
+        shell: pwsh
+        env:
+          COMPlus_TieredCompilation: '0'
+          COMPlus_ReadyToRun: '0'
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $cmd = 'dotnet test -c Release --nologo --no-build --results-directory Tests/MusicTheory.Tests/TestResults --logger "trx;LogFileName=test_results.trx" --collect "XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
+          Write-Host "Running tests (stable env)..."
+          Invoke-Expression $cmd
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host 'Retrying tests once...'
+            Start-Sleep -Seconds 1
+            Invoke-Expression $cmd
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+
+      - name: Install ReportGenerator
+        run: dotnet tool install -g dotnet-reportgenerator-globaltool
+
+      - name: Generate Coverage HTML
+        run: reportgenerator -reports:Tests/MusicTheory.Tests/TestResults/**/coverage.cobertura.xml -targetdir:Tests/MusicTheory.Tests/TestResults/coverage-report -reporttypes:Html
+
+      - name: Generate Coverage Badges
+        run: reportgenerator -reports:Tests/MusicTheory.Tests/TestResults/**/coverage.cobertura.xml -targetdir:Tests/MusicTheory.Tests/TestResults/coverage-report -reporttypes:Badges
+
+      - name: Generate Coverage Summary (XmlSummary)
+        run: reportgenerator -reports:Tests/MusicTheory.Tests/TestResults/**/coverage.cobertura.xml -targetdir:Tests/MusicTheory.Tests/TestResults/coverage-report -reporttypes:XmlSummary
+
+      - name: Enforce Coverage >= 70%
+        shell: pwsh
+        run: |
+          ./Scripts/CheckCoverage.ps1 -Threshold 70 -SummaryPath 'Tests/MusicTheory.Tests/TestResults/coverage-report/Summary.xml' -CoberturaRoot 'Tests/MusicTheory.Tests/TestResults'
+
+      - name: Upload Test Results (TRX)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-trx
+          path: |
+            Tests/MusicTheory.Tests/TestResults/*.trx
+            Tests/MusicTheory.Tests/TestResults/**/*.trx
+
+      - name: Upload Coverage (Cobertura)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-cobertura
+          path: Tests/MusicTheory.Tests/TestResults/**/coverage.cobertura.xml
+
+      - name: Upload Coverage (HTML)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html
+          path: Tests/MusicTheory.Tests/TestResults/coverage-report
