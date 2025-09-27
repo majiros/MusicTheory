@@ -1,8 +1,8 @@
 # MusicTheory
 
-![.NET 8](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet) ![C#](https://img.shields.io/badge/C%23-Library-blue?logo=c-sharp) [![CI](https://github.com/majiros/MusicTheory/actions/workflows/ci.yml/badge.svg)](https://github.com/majiros/MusicTheory/actions/workflows/ci.yml) [![.NET CI](https://github.com/majiros/MusicTheory/actions/workflows/dotnet.yml/badge.svg)](https://github.com/majiros/MusicTheory/actions/workflows/dotnet.yml) ![coverage](Tests/MusicTheory.Tests/TestResults/coverage-report/badge_linecoverage.svg)
-<!-- カバレッジバッジはローカル生成物の相対パスを参照しています。
-GitHub Pages 公開後は https://majiros.github.io/MusicTheory/badge_linecoverage.svg に切替可能です（coverage-pages ワークフローの公開URLに合わせて調整）。 -->
+![.NET 8](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet) ![C#](https://img.shields.io/badge/C%23-Library-blue?logo=c-sharp) [![CI](https://github.com/majiros/MusicTheory/actions/workflows/ci.yml/badge.svg)](https://github.com/majiros/MusicTheory/actions/workflows/ci.yml) [![.NET CI](https://github.com/majiros/MusicTheory/actions/workflows/dotnet.yml/badge.svg)](https://github.com/majiros/MusicTheory/actions/workflows/dotnet.yml) [![coverage](https://majiros.github.io/MusicTheory/badge_linecoverage.svg)](https://majiros.github.io/MusicTheory/)
+<!-- カバレッジバッジは GitHub Pages に公開されたバッジ SVG を参照しています。
+ローカル生成物を使う場合は Tests/MusicTheory.Tests/TestResults/coverage-report/badge_linecoverage.svg に戻してください。 -->
 
 コード/スケール/インターバル基礎と和音解析 (Chord Analyzer) を含む .NET 8 ライブラリです。
 
