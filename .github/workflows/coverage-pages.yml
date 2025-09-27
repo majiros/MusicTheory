@@ -42,10 +42,10 @@ jobs:
             --collect 'XPlat Code Coverage' -- \
             DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
 
-      - name: Install ReportGenerator
+      - name: Install ReportGenerator (local tool path)
         run: |
-          dotnet tool install -g dotnet-reportgenerator-globaltool
-          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+          dotnet tool install --tool-path ./tools dotnet-reportgenerator-globaltool
+          ls -la ./tools || true
 
       - name: Debug PATH and coverage files
         run: |
@@ -56,10 +56,10 @@ jobs:
 
       - name: Generate coverage report (Html/XmlSummary/Badges)
         run: |
-          "$HOME/.dotnet/tools/reportgenerator" \
-            -reports:Tests/MusicTheory.Tests/TestResults/**/coverage.cobertura.xml \
-            -targetdir:Tests/MusicTheory.Tests/TestResults/coverage-report \
-            -reporttypes:Html;XmlSummary;Badges
+          ./tools/reportgenerator \
+            -reports:"Tests/MusicTheory.Tests/TestResults/**/coverage.cobertura.xml" \
+            -targetdir:"Tests/MusicTheory.Tests/TestResults/coverage-report" \
+            -reporttypes:"Html;XmlSummary;Badges"
 
       - name: Upload Pages artifact (coverage-report)
         uses: actions/upload-pages-artifact@v3
