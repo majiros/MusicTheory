@@ -60,13 +60,25 @@ jobs:
         run: |
           ./tools/reportgenerator \
             -reports:"Tests/MusicTheory.Tests/TestResults/**/coverage.cobertura.xml" \
-            -targetdir:"Tests/MusicTheory.Tests/TestResults/coverage-report" \
+            -targetdir:"site/coverage" \
             -reporttypes:"Html;XmlSummary;Badges"
 
-      - name: Upload Pages artifact (coverage-report)
+      - name: Prepare site index
+        run: |
+          mkdir -p site
+          cp Scripts/PagesIndex.html site/index.html
+          # keep badge path stable at /badge_linecoverage.svg
+          cp site/coverage/badge_linecoverage.svg site/badge_linecoverage.svg
+          # also publish branch/method badges at site root for README badges
+          if [ -f site/coverage/badge_branchcoverage.svg ]; then cp site/coverage/badge_branchcoverage.svg site/badge_branchcoverage.svg; fi
+          if [ -f site/coverage/badge_methodcoverage.svg ]; then cp site/coverage/badge_methodcoverage.svg site/badge_methodcoverage.svg; fi
+          # optional combined badge
+          if [ -f site/coverage/badge_combined.svg ]; then cp site/coverage/badge_combined.svg site/badge_combined.svg; fi
+
+      - name: Upload Pages artifact (site)
         uses: actions/upload-pages-artifact@v3
         with:
-          path: Tests/MusicTheory.Tests/TestResults/coverage-report
+          path: site
 
   deploy:
     needs: build-and-coverage
