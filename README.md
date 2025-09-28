@@ -1,6 +1,6 @@
 # MusicTheory
 
-![.NET 8](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet) ![C#](https://img.shields.io/badge/C%23-Library-blue?logo=c-sharp) [![CI](https://github.com/majiros/MusicTheory/actions/workflows/ci.yml/badge.svg)](https://github.com/majiros/MusicTheory/actions/workflows/ci.yml) [![.NET CI](https://github.com/majiros/MusicTheory/actions/workflows/dotnet.yml/badge.svg)](https://github.com/majiros/MusicTheory/actions/workflows/dotnet.yml) [![coverage](https://majiros.github.io/MusicTheory/badge_linecoverage.svg)](https://majiros.github.io/MusicTheory/)
+![.NET 8](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet) ![C#](https://img.shields.io/badge/C%23-Library-blue?logo=c-sharp) [![CI](https://github.com/majiros/MusicTheory/actions/workflows/ci.yml/badge.svg)](https://github.com/majiros/MusicTheory/actions/workflows/ci.yml) [![.NET CI](https://github.com/majiros/MusicTheory/actions/workflows/dotnet.yml/badge.svg)](https://github.com/majiros/MusicTheory/actions/workflows/dotnet.yml) [![coverage](https://majiros.github.io/MusicTheory/badge_linecoverage.svg)](https://majiros.github.io/MusicTheory/index.html)
 <!-- カバレッジバッジは GitHub Pages に公開されたバッジ SVG を参照しています。
 ローカル生成物を使う場合は Tests/MusicTheory.Tests/TestResults/coverage-report/badge_linecoverage.svg に戻してください。 -->
 
@@ -34,6 +34,7 @@
 - [トラブルシューティング](#トラブルシューティング)
 - [CI（GitHub Actions）](#cigithub-actions)
 - [和声法ロードマップ（v1の目安）](#和声法ロードマップv1の目安)
+- [カバレッジ（公開/ローカル）](#カバレッジ公開ローカル)
 
 
 ## 主な機能
@@ -186,6 +187,19 @@ var p = ProgressionAnalyzer.Analyze(progression, new Key(60, true));
 今後は V9、借用和音、モジュレーション、進行ルールの精緻化等を段階的に拡張予定です。
 → V9 / bII7 / bVI7 は実装済み。以降は借用和音のさらなる拡張（変化和音の体系化）、進行ルール強化、モジュレーション検出の精緻化を継続します。
 
+## カバレッジ（公開/ローカル）
+
+- 公開（GitHub Pages）
+  - レポート: <https://majiros.github.io/MusicTheory/index.html>
+  - バッジ: <https://majiros.github.io/MusicTheory/badge_linecoverage.svg>
+  - ワークフロー: <https://github.com/majiros/MusicTheory/actions/workflows/coverage-pages.yml>
+    - main への push と毎日深夜（UTC）に自動実行されます
+
+- ローカル生成（VS Code タスク）
+  - 推奨: `coverage: full warm stable (simple)` → HTML/XmlSummary/Badges を生成
+  - 生成物: `Tests/MusicTheory.Tests/TestResults/coverage-report/index.html`
+  - バッジ（ローカル）: `Tests/MusicTheory.Tests/TestResults/coverage-report/badge_linecoverage.svg`
+
 ## Strict PAC オプション（厳格なPAC判定）
 
 Authentic を Perfect Authentic Cadence (PAC) とみなす条件を厳格化するためのオプションを提供します。既定ではオフ（従来互換）で、教育/採点用途などで厳しめの PAC を要求したい場合のみ有効化してください。
@@ -310,11 +324,11 @@ PowerShell のクォートについて（Windows）
 - 上記は最小抜粋です。実行時の `options.*` や `warnings` などは省略しています。
 - Strict PAC の一部（ソプラノ主音・導音解決）はボイシングが必要です。CLI デモでは pac=false で厳格条件を満たしていないことを確認するのが確実です。
 
-関連: IAC の最小 JSON 抜粋は [こちら](#iac-json) を参照。
+関連: IAC の最小 JSON 抜粋は README 末尾の「最小例（IAC の JSON 抜粋）」セクションを参照。
 
 #### IAC vs Strict PAC（短い対比）
 
-- IAC（Imperfect Authentic）は「Authentic（V→I 系）」だが PAC 条件を満たさないため pac=false になるケース。代表例は V6→I と V→I6。最小 JSON は[こちら](#iac-json)。
+- IAC（Imperfect Authentic）は「Authentic（V→I 系）」だが PAC 条件を満たさないため pac=false になるケース。代表例は V6→I と V→I6。最小 JSON は README 末尾の該当セクションを参照。
 - Strict PAC フラグは PAC をさらに厳格にするためのオプション群（素朴 triad 限定／ドミナント拡張禁止／ソプラノ=主音／導音の上行解決）。通常 pac=true になる並びでも、これらの条件で pac=false になり得ます。
 - 使い分けの目安:
   - 「Authentic だが PAC ではない」ことを素直に確認したい → IAC 最小例（V6→I / V→I6）
