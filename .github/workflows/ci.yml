@@ -40,15 +40,12 @@ jobs:
       - name: Build (Release)
         run: dotnet build -c Release --nologo --no-restore
 
-      - name: Test (TRX + Coverage, stable env, retry once)
+      - name: Test (TRX + Coverage, retry once)
         shell: pwsh
-        env:
-          COMPlus_TieredCompilation: '0'
-          COMPlus_ReadyToRun: '0'
         run: |
           $ErrorActionPreference = 'Stop'
           $cmd = 'dotnet test -c Release --nologo --no-build --results-directory Tests/MusicTheory.Tests/TestResults --logger "trx;LogFileName=test_results.trx" --collect "XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
-          Write-Host "Running tests (stable env)..."
+          Write-Host "Running tests..."
           Invoke-Expression $cmd
           if ($LASTEXITCODE -ne 0) {
             Write-Host 'Retrying tests once...'
