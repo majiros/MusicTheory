@@ -64,8 +64,8 @@
 - [x] 6-4 組み合わせオプションの回帰テスト（hide64 + cad64Dominant の両立性）
 - [ ] カデンツ詳細（PAC/IAC 近似の判定閾値と Half 抑制ルールの再検討）
 - [ ] モジュレーション推定のプリセット最適化（stable/permissive の閾値調整と実サンプル収集）
-- [ ] README のトップに Pages 公開URLのカバレッジバッジを差替（公開後）
- - [ ] ドキュメントに mixture-7th 警告の JSON 例と利用指針を追記
- - [ ] README のトップに Pages 公開URLのカバレッジバッジを差替（公開後）
+- [x] README のトップに Pages 公開URLのカバレッジバッジを差替（公開後）
  - [x] ドキュメントに mixture-7th 警告の JSON 例と利用指針を追記
-  - [ ] Coverage Pages ワークフローを実行し、公開後の URL を README のバッジに反映
+ - [x] Coverage Pages ワークフローを実行し、公開後の URL を README のバッジに反映
+ - [x] カバレッジゲートを 75% へ引き上げ（README/CI/Pages すべて統一、既定値も更新）
+ - [x] 公開前ゲート（75%）をドキュメントに明記、ローカル/公開カバレッジ取得スクリプト追加

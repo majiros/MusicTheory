@@ -4,7 +4,20 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+### Changed
+
+- **カバレッジゲートを75%に引き上げ**: 全ワークフロー（CI・Pages）とドキュメントで統一（旧: 70%）
+  - `Scripts/CheckCoverage.ps1` の既定閾値を 75.0 に更新
+  - README のカバレッジゲートセクションを 75% 標準に更新
+  - GitHub Pages ワークフローで `site/coverage/Summary.xml` に対する 75% プレ公開ゲートを適用
+  - VS Code タスク: 75%/80% チェックを提供、70% チェックは `[legacy]` にマーク
+
 ### Added
+
+- `Scripts/GetLocalCoverage.ps1`: ローカル Summary.xml の検査（Line/Branch/Method/GeneratedOn）
+- `Scripts/CheckCoverage.ps1`: 新旧 ReportGenerator フォーマット対応の XmlSummary パース強化
+- `Scripts/GetPublicCoverage.ps1`: リトライとキャッシュバスティング機能付き公開カバレッジ取得
+- README: Pages プレ公開ゲートとローカル/公開タスクのガイダンスを明記
 
 - HarmonyOptions.IncludeMajInSeventhInversions: ダイアトニックのメジャーセブンス和音における転回表記へ「maj」を含めるオプションを追加（既定: false）。
   - 例: Cメジャー IVmaj7 の転回 → 既定=IV65/IV43/IV42、オプション有効=IVmaj65/IVmaj43/IVmaj42。ルート表記は常に IVmaj7。
