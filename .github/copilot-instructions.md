@@ -1,4 +1,12 @@
-- [x] Verify that the copilot-instructions.md file in the .github directory is created.
+- [x] Verify that the copilot-instructions.md file in the .github - [x] README のトップに Pages 公開URLのカバレッジバッジを差替（公開後）
+ - [x] ドキュメントに mixture-7th 警告の JSON 例と利用指針を追記
+ - [x] Coverage Pages ワークフローを実行し、公開後の URL を README のバッジに反映
+ - [x] カバレッジゲートを 75% へ引き上げ（README/CI/Pages すべて統一、既定値も更新）
+ - [x] 公開前ゲート（75%）をドキュメントに明記、ローカル/公開カバレッジ取得スクリプト追加
+ - [x] CHANGELOG.md を更新し、75%ゲート実装の変更履歴を追記
+ - [x] ローカルカバレッジ 80.5% を確認（75%ゲートPASS、テスト277合格/1スキップ）
+ - [x] 全変更をコミット＆プッシュ（コミット a62b4e5, ecc819a）
+ - [x] プロジェクト統計: C#ファイル142個、総行数13,771行tory is created.
 
 - [x] Clarify Project Requirements
 - [x] Scaffold the Project
