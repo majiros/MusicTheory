@@ -34,10 +34,7 @@ jobs:
       - name: Build (Release)
         run: dotnet build -c Release --nologo
 
-      - name: Test (coverage stable)
-        env:
-          COMPlus_TieredCompilation: '0'
-          COMPlus_ReadyToRun: '0'
+      - name: Test (coverage)
         run: |
           dotnet test -c Release --nologo --no-build \
             --results-directory Tests/MusicTheory.Tests/TestResults \
