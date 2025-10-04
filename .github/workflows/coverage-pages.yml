@@ -63,6 +63,11 @@ jobs:
             -targetdir:"site/coverage" \
             -reporttypes:"Html;XmlSummary;Badges"
 
+      - name: Enforce Coverage >= 75% before publish
+        shell: bash
+        run: |
+          pwsh -NoProfile -ExecutionPolicy Bypass -File ./Scripts/CheckCoverage.ps1 -Threshold 75 -SummaryPath 'site/coverage/Summary.xml' -CoberturaRoot 'Tests/MusicTheory.Tests/TestResults'
+
       - name: Prepare site index
         run: |
           mkdir -p site

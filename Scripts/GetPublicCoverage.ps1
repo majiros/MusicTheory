@@ -8,10 +8,20 @@ $ErrorActionPreference = 'Stop'
 
 function Get-Summary {
   param([string]$Url)
-  # Cache-busting to avoid CDN caches
+  # Cache-busting to avoid CDN caches (use UriBuilder for safety)
   $ts = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
-  $u = if ($Url -match '\?') { "$Url&v=$ts" } else { "$Url?v=$ts" }
-  $resp = Invoke-WebRequest -Uri $u -UseBasicParsing -Headers @{ 'Cache-Control'='no-cache'; 'Pragma'='no-cache' }
+  try {
+    $builder = [System.UriBuilder]::new($Url)
+  }
+  catch {
+    throw "Invalid Url: '$Url' — $($_.Exception.Message)"
+  }
+  $q = $builder.Query.TrimStart('?')
+  if ([string]::IsNullOrWhiteSpace($q)) { $builder.Query = "v=$ts" }
+  else { $builder.Query = "$q&v=$ts" }
+  $u = $builder.Uri.AbsoluteUri
+  Write-Host "Fetching: $u" -ForegroundColor DarkCyan
+  $resp = Invoke-WebRequest -Uri ([Uri]$u) -UseBasicParsing -Headers @{ 'Cache-Control'='no-cache'; 'Pragma'='no-cache' }
   if ($resp.StatusCode -ge 400) { throw "HTTP $($resp.StatusCode)" }
   [xml]$xml = $resp.Content
   $sum = $xml.CoverageReport.Summary

@@ -98,7 +98,7 @@ jobs:
           name: coverage-html
           path: Tests/MusicTheory.Tests/TestResults/coverage-report/**
 
-      - name: Enforce coverage threshold (70%)
+      - name: Enforce coverage threshold (75%)
         shell: pwsh
         run: |
-          ./Scripts/CheckCoverage.ps1 -Threshold 70 -SummaryPath 'Tests/MusicTheory.Tests/TestResults/coverage-report/Summary.xml' -CoberturaRoot 'Tests/MusicTheory.Tests/TestResults'
+          ./Scripts/CheckCoverage.ps1 -Threshold 75 -SummaryPath 'Tests/MusicTheory.Tests/TestResults/coverage-report/Summary.xml' -CoberturaRoot 'Tests/MusicTheory.Tests/TestResults'

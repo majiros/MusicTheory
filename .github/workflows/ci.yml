@@ -69,10 +69,10 @@ jobs:
       - name: Generate Coverage Summary (XmlSummary)
         run: reportgenerator -reports:Tests/MusicTheory.Tests/TestResults/**/coverage.cobertura.xml -targetdir:Tests/MusicTheory.Tests/TestResults/coverage-report -reporttypes:XmlSummary
 
-      - name: Enforce Coverage >= 70%
+      - name: Enforce Coverage >= 75%
         shell: pwsh
         run: |
-          ./Scripts/CheckCoverage.ps1 -Threshold 70 -SummaryPath 'Tests/MusicTheory.Tests/TestResults/coverage-report/Summary.xml' -CoberturaRoot 'Tests/MusicTheory.Tests/TestResults'
+          ./Scripts/CheckCoverage.ps1 -Threshold 75 -SummaryPath 'Tests/MusicTheory.Tests/TestResults/coverage-report/Summary.xml' -CoberturaRoot 'Tests/MusicTheory.Tests/TestResults'
 
       - name: Upload Test Results (TRX)
         if: always()

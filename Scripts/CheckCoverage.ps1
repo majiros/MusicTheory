@@ -1,5 +1,5 @@
 param(
-    [double]$Threshold = 70.0,
+    [double]$Threshold = 75.0,
     [string]$SummaryPath = 'Tests/MusicTheory.Tests/TestResults/coverage-report/Summary.xml',
     [string]$CoberturaRoot = 'Tests/MusicTheory.Tests/TestResults'
 )
@@ -11,8 +11,29 @@ function Get-LineCoverageFromSummary {
     if (Test-Path $Path) {
         try {
             [xml]$xml = Get-Content -Path $Path
-            $line = $xml.Summary.Overall.Linecoverage
-            if (-not $line) { $line = $xml.summary.overall.linecoverage }
+
+            # ReportGenerator XmlSummary (new): <CoverageReport><Summary><Linecoverage>
+            $line = $null
+            if ($xml.CoverageReport -and $xml.CoverageReport.Summary -and $xml.CoverageReport.Summary.Linecoverage) {
+                $line = $xml.CoverageReport.Summary.Linecoverage
+            }
+
+            # ReportGenerator XmlSummary (older Overall node)
+            if (-not $line -and $xml.Summary -and $xml.Summary.Overall -and $xml.Summary.Overall.Linecoverage) {
+                $line = $xml.Summary.Overall.Linecoverage
+            }
+            if (-not $line -and $xml.summary -and $xml.summary.overall -and $xml.summary.overall.linecoverage) {
+                $line = $xml.summary.overall.linecoverage
+            }
+
+            # ReportGenerator XmlSummary (flat <Summary><Linecoverage>)
+            if (-not $line -and $xml.Summary -and $xml.Summary.Linecoverage) {
+                $line = $xml.Summary.Linecoverage
+            }
+            if (-not $line -and $xml.summary -and $xml.summary.linecoverage) {
+                $line = $xml.summary.linecoverage
+            }
+
             if ($line) { return [double]$line }
         } catch { }
     }

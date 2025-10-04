@@ -193,9 +193,13 @@ var p = ProgressionAnalyzer.Analyze(progression, new Key(60, true));
   - レポート: <https://majiros.github.io/MusicTheory/index.html>
   - バッジ: Line <https://majiros.github.io/MusicTheory/badge_linecoverage.svg> / Branch <https://majiros.github.io/MusicTheory/badge_branchcoverage.svg> / Method <https://majiros.github.io/MusicTheory/badge_methodcoverage.svg>
   - ワークフロー: <https://github.com/majiros/MusicTheory/actions/workflows/coverage-pages.yml>
-    - main への push と毎日深夜（UTC）に自動実行されます
+    - main への push と毎日深夜（UTC）に自動実行されます。
+    - 公開前ゲート: `site/coverage/Summary.xml` に対し `Scripts/CheckCoverage.ps1 -Threshold 75` を適用し、基準未満なら公開を中止します。
     - トップページではバッジに加えて Line/Branch/Method のカバレッジ率を自動表示します（`coverage/Summary.xml` を読み取り）。
     - 初回公開直後や直近の更新直後はキャッシュの都合で表示が遅れる／404 が出ることがあります。数十秒〜数分待って再読み込みしてください（ハードリロード推奨）。
+    - VS Code タスク（ローカル）:
+      - `coverage: open (public)` … 公開トップを既定ブラウザで開く
+      - `coverage: fetch public Summary.xml` … 公開 `coverage/Summary.xml` を取得し Line/Branch/Method/Generated on (UTC) を表示（リトライつき）。
 
 - ローカル生成（VS Code タスク）
   - 推奨: `coverage: full warm stable (simple)` → HTML/XmlSummary/Badges を生成
@@ -1584,11 +1588,11 @@ dotnet test -c Release --nologo --no-build
 - カバレッジHTML生成: 「coverage: html (simple)」「coverage: full stable」
   - CIのWindowsジョブでは HTML/XmlSummary に加えて Badges(SVG) も生成し、同じアーティファクトに含めます。
 
-### カバレッジゲート（>= 70%）
+### カバレッジゲート（>= 75%）
 
 - ローカル（VS Code タスク）
-  - `coverage: full+check stable` を実行すると、Release ビルド → 安定設定でのカバレッジ収集 → HTML 生成 → しきい値チェック（70%）までを一括実行します。
-  - 単体チェックのみは `coverage: check (70%)`（直近の `Tests/MusicTheory.Tests/TestResults/**/coverage.cobertura.xml` から算出）。
+  - `coverage: full+check stable` を実行すると、Release ビルド → 安定設定でのカバレッジ収集 → HTML 生成 → しきい値チェック（75%）までを一括実行します。
+  - 単体チェックのみは `coverage: check (75%)`（直近の `Tests/MusicTheory.Tests/TestResults/**/coverage.cobertura.xml` から算出）。
 
 - ローカル（PowerShell 手動）
 
@@ -1599,11 +1603,11 @@ dotnet test -c Release --nologo --no-build --results-directory Tests/MusicTheory
   DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
 reportgenerator -reports:Tests/MusicTheory.Tests/TestResults/**/coverage.cobertura.xml `
   -targetdir:Tests/MusicTheory.Tests/TestResults/coverage-report -reporttypes:Html
-powershell -NoProfile -ExecutionPolicy Bypass -File Scripts/CheckCoverage.ps1 -Threshold 70
+powershell -NoProfile -ExecutionPolicy Bypass -File Scripts/CheckCoverage.ps1 -Threshold 75
 ```
 
 - CI（GitHub Actions）
-  - Windows ジョブでカバレッジ（Cobertura）→ HTML / XmlSummary 生成 → `Scripts/CheckCoverage.ps1 -Threshold 70` によりゲートを適用します。
+  - Windows ジョブでカバレッジ（Cobertura）→ HTML / XmlSummary 生成 → `Scripts/CheckCoverage.ps1 -Threshold 75` によりゲートを適用します。
   - 収集安定化のため `COMPlus_TieredCompilation=0` / `COMPlus_ReadyToRun=0` を設定。
   - アーティファクトとして TRX / Cobertura XML / HTML / XmlSummary をアップロードします。
 
