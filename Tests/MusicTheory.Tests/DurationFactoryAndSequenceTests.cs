@@ -467,3 +467,373 @@ public class TupletTests
         Assert.Equal(3, rational.Denominator);
     }
 }
+
+/// <summary>
+/// Tests for RationalFactor to improve coverage.
+/// </summary>
+public class RationalFactorTests
+{
+    // ──────────────────────────────────────────────────────────
+    // Constructor & Simplification
+    // ──────────────────────────────────────────────────────────
+
+    [Fact]
+    public void Constructor_SimplifiesFraction()
+    {
+        var rf = new RationalFactor(6, 8);
+        Assert.Equal(3, rf.Numerator);
+        Assert.Equal(4, rf.Denominator);
+    }
+
+    [Fact]
+    public void Constructor_ZeroNumerator_ResultsIn0Over1()
+    {
+        var rf = new RationalFactor(0, 5);
+        Assert.Equal(0, rf.Numerator);
+        Assert.Equal(1, rf.Denominator);
+    }
+
+    [Fact]
+    public void Constructor_ZeroDenominator_ThrowsDivideByZero()
+    {
+        Assert.Throws<DivideByZeroException>(() => new RationalFactor(5, 0));
+    }
+
+    [Fact]
+    public void Constructor_NegativeNumerator_PreservesSign()
+    {
+        var rf = new RationalFactor(-3, 4);
+        Assert.Equal(-3, rf.Numerator);
+        Assert.Equal(4, rf.Denominator);
+    }
+
+    [Fact]
+    public void Constructor_NegativeDenominator_MovesSignToNumerator()
+    {
+        var rf = new RationalFactor(3, -4);
+        Assert.Equal(-3, rf.Numerator);
+        Assert.Equal(4, rf.Denominator);
+    }
+
+    [Fact]
+    public void Constructor_BothNegative_ResultsPositive()
+    {
+        var rf = new RationalFactor(-6, -8);
+        Assert.Equal(3, rf.Numerator);
+        Assert.Equal(4, rf.Denominator);
+    }
+
+    [Fact]
+    public void FromFraction_CreatesSameAsConstructor()
+    {
+        var rf1 = new RationalFactor(3, 4);
+        var rf2 = RationalFactor.FromFraction(3, 4);
+        
+        Assert.Equal(rf1.Numerator, rf2.Numerator);
+        Assert.Equal(rf1.Denominator, rf2.Denominator);
+    }
+
+    // ──────────────────────────────────────────────────────────
+    // Addition
+    // ──────────────────────────────────────────────────────────
+
+    [Fact]
+    public void Addition_SameDenominator_AddsNumerators()
+    {
+        var a = new RationalFactor(1, 4);
+        var b = new RationalFactor(1, 4);
+        var result = a + b;
+        
+        Assert.Equal(1, result.Numerator);
+        Assert.Equal(2, result.Denominator);
+    }
+
+    [Fact]
+    public void Addition_DifferentDenominators_FindsCommonDenominator()
+    {
+        var a = new RationalFactor(1, 2); // 1/2
+        var b = new RationalFactor(1, 3); // 1/3
+        var result = a + b;
+        
+        // 1/2 + 1/3 = 3/6 + 2/6 = 5/6
+        Assert.Equal(5, result.Numerator);
+        Assert.Equal(6, result.Denominator);
+    }
+
+    [Fact]
+    public void Addition_ResultSimplified()
+    {
+        var a = new RationalFactor(1, 4);
+        var b = new RationalFactor(3, 4);
+        var result = a + b;
+        
+        // 1/4 + 3/4 = 4/4 = 1/1
+        Assert.Equal(1, result.Numerator);
+        Assert.Equal(1, result.Denominator);
+    }
+
+    // ──────────────────────────────────────────────────────────
+    // Multiplication
+    // ──────────────────────────────────────────────────────────
+
+    [Fact]
+    public void Multiplication_MultipliesNumeratorsAndDenominators()
+    {
+        var a = new RationalFactor(2, 3);
+        var b = new RationalFactor(3, 4);
+        var result = a * b;
+        
+        // 2/3 * 3/4 = 6/12 = 1/2
+        Assert.Equal(1, result.Numerator);
+        Assert.Equal(2, result.Denominator);
+    }
+
+    [Fact]
+    public void Multiplication_ByInteger_MultipliesNumerator()
+    {
+        var a = new RationalFactor(3, 4);
+        var result = a * 2;
+        
+        // 3/4 * 2 = 6/4 = 3/2
+        Assert.Equal(3, result.Numerator);
+        Assert.Equal(2, result.Denominator);
+    }
+
+    [Fact]
+    public void Multiplication_ByZero_ResultsInZero()
+    {
+        var a = new RationalFactor(3, 4);
+        var result = a * 0;
+        
+        Assert.Equal(0, result.Numerator);
+        Assert.Equal(1, result.Denominator);
+    }
+
+    // ──────────────────────────────────────────────────────────
+    // Division
+    // ──────────────────────────────────────────────────────────
+
+    [Fact]
+    public void Division_ByInteger_MultipliesDenominator()
+    {
+        var a = new RationalFactor(3, 4);
+        var result = a / 2;
+        
+        // 3/4 / 2 = 3/8
+        Assert.Equal(3, result.Numerator);
+        Assert.Equal(8, result.Denominator);
+    }
+
+    [Fact]
+    public void Division_ResultSimplified()
+    {
+        var a = new RationalFactor(6, 4);
+        var result = a / 2;
+        
+        // 6/4 / 2 = 6/8 = 3/4
+        Assert.Equal(3, result.Numerator);
+        Assert.Equal(4, result.Denominator);
+    }
+
+    // ──────────────────────────────────────────────────────────
+    // Conversion & Equality
+    // ──────────────────────────────────────────────────────────
+
+    [Fact]
+    public void ToDouble_ConvertsCorrectly()
+    {
+        var rf = new RationalFactor(3, 4);
+        Assert.Equal(0.75, rf.ToDouble(), precision: 10);
+    }
+
+    [Fact]
+    public void Equals_SameFraction_ReturnsTrue()
+    {
+        var a = new RationalFactor(3, 4);
+        var b = new RationalFactor(6, 8); // Simplifies to 3/4
+        
+        Assert.True(a.Equals(b));
+    }
+
+    [Fact]
+    public void Equals_DifferentFraction_ReturnsFalse()
+    {
+        var a = new RationalFactor(3, 4);
+        var b = new RationalFactor(2, 3);
+        
+        Assert.False(a.Equals(b));
+    }
+
+    [Fact]
+    public void GetHashCode_SameFraction_SameHash()
+    {
+        var a = new RationalFactor(3, 4);
+        var b = new RationalFactor(6, 8);
+        
+        Assert.Equal(a.GetHashCode(), b.GetHashCode());
+    }
+
+    [Fact]
+    public void ToString_FormatsCorrectly()
+    {
+        var rf = new RationalFactor(3, 4);
+        Assert.Equal("3/4", rf.ToString());
+    }
+}
+
+/// <summary>
+/// Tests for Duration advanced methods to improve coverage.
+/// </summary>
+public class DurationAdvancedTests
+{
+    // ──────────────────────────────────────────────────────────
+    // FromTicks
+    // ──────────────────────────────────────────────────────────
+
+    [Fact]
+    public void FromTicks_CreatesCorrectDuration()
+    {
+        var dur = Duration.FromTicks(480);
+        Assert.Equal(480, dur.Ticks);
+    }
+
+    [Fact]
+    public void FromTicks_NegativeTicks_ThrowsArgumentOutOfRange()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromTicks(-1));
+    }
+
+    [Fact]
+    public void FromTicks_ZeroTicks_Valid()
+    {
+        var dur = Duration.FromTicks(0);
+        Assert.Equal(0, dur.Ticks);
+    }
+
+    // ──────────────────────────────────────────────────────────
+    // FromBase Validation
+    // ──────────────────────────────────────────────────────────
+
+    [Fact]
+    public void FromBase_NegativeDots_ThrowsArgumentOutOfRange()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => 
+            Duration.FromBase(BaseNoteValue.Quarter, dots: -1));
+    }
+
+    [Fact]
+    public void FromBase_TooManyDots_ThrowsArgumentException()
+    {
+        Assert.Throws<ArgumentException>(() => 
+            Duration.FromBase(BaseNoteValue.Quarter, dots: 4));
+    }
+
+    // ──────────────────────────────────────────────────────────
+    // Duration Addition
+    // ──────────────────────────────────────────────────────────
+
+    [Fact]
+    public void Addition_CombinesDurations()
+    {
+        var quarter = DurationFactory.Quarter();
+        var eighth = DurationFactory.Eighth();
+        var result = quarter + eighth;
+        
+        Assert.Equal(Duration.TicksPerQuarter + Duration.TicksPerQuarter / 2, result.Ticks);
+    }
+
+    [Fact]
+    public void Addition_ZeroDuration_ReturnsOriginal()
+    {
+        var quarter = DurationFactory.Quarter();
+        var zero = Duration.FromTicks(0);
+        var result = quarter + zero;
+        
+        Assert.Equal(quarter.Ticks, result.Ticks);
+    }
+
+    // ──────────────────────────────────────────────────────────
+    // TryAsSimple
+    // ──────────────────────────────────────────────────────────
+
+    [Fact]
+    public void TryAsSimple_Quarter_ReturnsTrue()
+    {
+        var dur = DurationFactory.Quarter();
+        var success = dur.TryAsSimple(out var baseValue, out var dots);
+        
+        Assert.True(success);
+        Assert.Equal(BaseNoteValue.Quarter, baseValue);
+        Assert.Equal(0, dots);
+    }
+
+    [Fact]
+    public void TryAsSimple_DottedHalf_ReturnsTrue()
+    {
+        var dur = DurationFactory.Half(dots: 1);
+        var success = dur.TryAsSimple(out var baseValue, out var dots);
+        
+        Assert.True(success);
+        Assert.Equal(BaseNoteValue.Half, baseValue);
+        Assert.Equal(1, dots);
+    }
+
+    [Fact]
+    public void TryAsSimple_Triplet_ReturnsFalse()
+    {
+        var dur = DurationFactory.Tuplet(BaseNoteValue.Quarter, new Tuplet(3, 2));
+        var success = dur.TryAsSimple(out _, out _);
+        
+        Assert.False(success);
+    }
+
+    [Fact]
+    public void TryAsSimple_IrregularTicks_ReturnsFalse()
+    {
+        var dur = Duration.FromTicks(500); // Not a standard note value
+        var success = dur.TryAsSimple(out _, out _);
+        
+        Assert.False(success);
+    }
+
+    // ──────────────────────────────────────────────────────────
+    // Equality & ToString
+    // ──────────────────────────────────────────────────────────
+
+    [Fact]
+    public void Equals_SameDuration_ReturnsTrue()
+    {
+        var a = DurationFactory.Quarter();
+        var b = DurationFactory.Quarter();
+        
+        Assert.True(a.Equals(b));
+    }
+
+    [Fact]
+    public void Equals_DifferentDuration_ReturnsFalse()
+    {
+        var a = DurationFactory.Quarter();
+        var b = DurationFactory.Half();
+        
+        Assert.False(a.Equals(b));
+    }
+
+    [Fact]
+    public void GetHashCode_SameDuration_SameHash()
+    {
+        var a = DurationFactory.Quarter();
+        var b = DurationFactory.Quarter();
+        
+        Assert.Equal(a.GetHashCode(), b.GetHashCode());
+    }
+
+    [Fact]
+    public void ToString_IncludesFractionAndTicks()
+    {
+        var dur = DurationFactory.Quarter();
+        var str = dur.ToString();
+        
+        Assert.Contains("1/4", str);
+        Assert.Contains("480", str);
+    }
+}
