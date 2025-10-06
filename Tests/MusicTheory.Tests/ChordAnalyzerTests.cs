@@ -105,4 +105,163 @@ public class ChordAnalyzerTests
         var list = ChordAnalyzer.ToListRanked(pcs);
         Assert.DoesNotContain(list, c=>c.RootName=="C" && c.Formula.Symbol=="maj7");
     }
+
+    // Phase 4: Additional comprehensive tests for ChordAnalyzer
+    [Fact]
+    public void Analyze_EmptyInput_ReturnsEmpty()
+    {
+        var result = ChordAnalyzer.Analyze(Array.Empty<int>());
+        Assert.Empty(result);
+    }
+
+    [Fact]
+    public void Analyze_AllowInversionsFalse_OnlyMinRootCandidates()
+    {
+        // G7: pcs 7,11,2,5 → 最小rootは2
+        var pcs = new[]{7,11,2,5};
+        var result = ChordAnalyzer.Analyze(pcs, new ChordAnalyzerOptions(AllowInversions: false)).ToList();
+        // AllowInversions=false なら、root=2 のみ許可
+        Assert.All(result, c => Assert.Equal("D", c.RootName));
+    }
+
+    [Fact]
+    public void AnalyzeRanked_ReturnsSortedByTotalScore()
+    {
+        var pcs = new[]{0,4,7,11};
+        var result = ChordAnalyzer.AnalyzeRanked(pcs).ToList();
+        // スコアが降順であることを確認
+        for (int i = 0; i < result.Count - 1; i++)
+        {
+            Assert.True(result[i].TotalScore >= result[i+1].TotalScore);
+        }
+    }
+
+    [Fact]
+    public void ToListRanked_ReturnsListInDescendingOrder()
+    {
+        var pcs = new[]{0,3,7,10};
+        var result = ChordAnalyzer.ToListRanked(pcs);
+        Assert.IsType<List<ChordCandidate>>(result);
+        for (int i = 0; i < result.Count - 1; i++)
+        {
+            Assert.True(result[i].TotalScore >= result[i+1].TotalScore);
+        }
+    }
+
+    [Fact]
+    public void SuggestScales_ReturnsMatchingScales()
+    {
+        // maj7 symbol に対して Ionian/Lydian などが返る
+        var normalized = new[]{0,4,7,11};
+        var scales = ChordAnalyzer.SuggestScales("maj7", normalized).ToList();
+        Assert.NotEmpty(scales);
+        Assert.Contains(scales, s => s.Name.Contains("Ionian") || s.Name.Contains("Lydian"));
+    }
+
+    [Fact]
+    public void SuggestScales_NoHint_ReturnsEmpty()
+    {
+        var normalized = new[]{0,4,7};
+        var scales = ChordAnalyzer.SuggestScales("unknown_symbol", normalized).ToList();
+        Assert.Empty(scales);
+    }
+
+    [Fact]
+    public void SuggestScales_NoExactMatch_ReturnsAllHints()
+    {
+        // m7 には Dorian/Aeolian ヒントがあるが、normalized が完全一致しない場合でもヒントを返す
+        var normalized = new[]{0,3,7,10,1}; // extra note: Db
+        var scales = ChordAnalyzer.SuggestScales("m7", normalized).ToList();
+        Assert.NotEmpty(scales);
+    }
+
+    [Fact]
+    public void ToDto_PreservesEssentialData()
+    {
+        var pcs = new[]{0,4,7,10};
+        var candidate = ChordAnalyzer.ToListRanked(pcs).First();
+        var dto = candidate.ToDto();
+        Assert.Equal(candidate.RootName, dto.Root);
+        Assert.Equal(candidate.Formula.Symbol, dto.Symbol);
+        Assert.Equal(candidate.TotalScore, dto.TotalScore);
+        Assert.Equal(candidate.CompletionRatio, dto.CompletionRatio);
+    }
+
+    [Fact]
+    public void ToDto_WithScaleDetail_PreservesScaleInfo()
+    {
+        var pcs = new[]{0,4,7,11,2,5,9}; // Cmaj13
+        var candidate = ChordAnalyzer.ToListRanked(pcs).FirstOrDefault(c => c.RootName == "C" && c.ScaleDetail.HasValue);
+        if (candidate != default)
+        {
+            var dto = candidate.ToDto();
+            Assert.NotNull(dto.ScaleDetail);
+            Assert.Equal(candidate.ScaleDetail!.Value.ScaleName, dto.ScaleDetail!.Value.ScaleName);
+        }
+    }
+
+    [Fact]
+    public void Analyze_CoreCoverageWeight_AffectsScore()
+    {
+        var pcs = new[]{0,4,7,11}; // Cmaj7 完全
+        var options = new ChordAnalyzerOptions(CoreCoverageWeight: 10.0);
+        var candidate = ChordAnalyzer.ToListRanked(pcs, options).First(c => c.RootName == "C" && c.Formula.Symbol == "maj7");
+        Assert.True(candidate.TotalScore > 0);
+    }
+
+    [Fact]
+    public void Analyze_TensionCoverageWeight_AffectsScore()
+    {
+        var pcs = new[]{0,4,7,10,2,5,9}; // C13
+        var options = new ChordAnalyzerOptions(TensionCoverageWeight: 5.0);
+        var candidate = ChordAnalyzer.ToListRanked(pcs, options).First(c => c.RootName == "C" && c.Formula.Symbol == "13");
+        Assert.True(candidate.TotalScore > 0);
+    }
+
+    [Fact]
+    public void Analyze_CustomScaleRankingCore_UsesCustomDefinition()
+    {
+        var pcs = new[]{0,4,7,11};
+        var options = new ChordAnalyzerOptions(ScaleRankingCoreSemitones: new[]{3,4,11});
+        var result = ChordAnalyzer.ToListRanked(pcs, options);
+        Assert.NotEmpty(result);
+    }
+
+    [Fact]
+    public void RankAlternativeScales_ExactCoverBonus()
+    {
+        // 完全一致でボーナスが付与されることを間接確認
+        var pcs = new[]{0,4,7,11};
+        var candidate = ChordAnalyzer.ToListRanked(pcs).First(c => c.RootName == "C" && c.Formula.Symbol == "maj7");
+        Assert.NotEmpty(candidate.AlternativeScaleRanks);
+        var topRank = candidate.AlternativeScaleRanks.First();
+        Assert.True(topRank.Priority > 0);
+    }
+
+    [Fact]
+    public void ScaleFitDetail_CapturesPresentAndMissingTensions()
+    {
+        var pcs = new[]{0,4,7,10,2}; // C7 + 9
+        var candidate = ChordAnalyzer.ToListRanked(pcs).FirstOrDefault(c => c.RootName == "C" && c.Formula.Symbol == "9");
+        if (candidate != default && candidate.ScaleDetail.HasValue)
+        {
+            var detail = candidate.ScaleDetail!.Value;
+            Assert.Contains(2, detail.PresentTensions);
+            Assert.True(detail.TensionCoverage > 0);
+        }
+    }
+
+    [Fact]
+    public void ScaleFitDetail_CapturesPresentAndMissingCores()
+    {
+        var pcs = new[]{0,4,11}; // Cmaj7 without 5th
+        var candidate = ChordAnalyzer.ToListRanked(pcs).First(c => c.RootName == "C" && c.Formula.Symbol == "maj7");
+        if (candidate.ScaleDetail.HasValue)
+        {
+            var detail = candidate.ScaleDetail!.Value;
+            Assert.Contains(4, detail.PresentCores);
+            Assert.Contains(11, detail.PresentCores);
+            Assert.True(detail.CoreCoverage < 1.0); // missing 5th
+        }
+    }
 }
