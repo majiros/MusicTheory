@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0] - 2025-10-18
+
+### 🎉 Production Ready Release
+
+v1.0.0 は本番リリース版です。18フェーズにわたる段階的な品質向上を経て、**84.8% カバレッジ**（業界標準70-80%を超える）、**915テスト**、**完全なCI/CD自動化**を達成しました。
+
+#### Highlights
+- **Coverage**: Line 84.8%, Branch 74.8%, Method 92.4%
+- **Tests**: 915 passing, 2 skipped (917 total)
+- **Documentation**: ~4,000 lines (QUICKSTART, COVERAGE_ACHIEVEMENT, LESSONS_LEARNED, PROJECT_STATUS, SESSION_SUMMARY)
+- **CI/CD**: 4 GitHub Actions workflows (test.yml NEW, coverage-pages.yml, ci.yml, dotnet.yml)
+- **Quality Gate**: 75% minimum enforced automatically
+
+#### Core Features Completed
+- Diatonic chords (triads & sevenths with inversions)
+- Secondary functions (V/x, vii°/x, vii°7/x)
+- Borrowed chords (bVI, bVII, bIII, bII with 7th warnings)
+- Augmented sixth chords (It6, Fr43, Ger65)
+- Neapolitan sixth (bII6 with enforceN6 option)
+- Ninth chords (V9 vs V7(9) toggle)
+- 6-4 classification (Cadential, Passing, Pedal)
+- Key estimation with modulation detection
+- Cadence analysis (PAC, IAC, HC, DC, PC)
+- CLI with JSON output & schema support
+
+詳細は [RELEASE_NOTES.md](RELEASE_NOTES.md) を参照してください。
+
 ## Unreleased
 
 ### Changed
