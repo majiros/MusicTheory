@@ -160,7 +160,7 @@ public class SequenceLayoutTests
         // Should recognize triplet pattern and rebuild with proper tuplet durations
         Assert.Equal(3, result.Count);
         Assert.All(result, r => Assert.IsType<Note>(r.entity));
-        
+
         // Check that durations have correct tick values
         var firstNote = (Note)result[0].entity;
         Assert.Equal(tripletTicks, firstNote.Duration.Ticks);
@@ -206,7 +206,7 @@ public class SequenceLayoutTests
         // Should recognize 5:4 pattern
         Assert.Equal(5, result.Count);
         var firstNote = (Note)result[0].entity;
-        
+
         // Should have correct tick duration
         Assert.Equal(elemTicks, firstNote.Duration.Ticks);
     }
@@ -272,7 +272,7 @@ public class SequenceLayoutTests
 
         Assert.Equal(5, result.Count);
         var firstNote = (Note)result[0].entity;
-        
+
         // Should have correct tick duration
         Assert.Equal(quintupletTicks, firstNote.Duration.Ticks);
     }
@@ -343,7 +343,7 @@ public class SequenceLayoutTests
     public void InsertRests_RunDetection_GapBreaksRun()
     {
         int tripletTicks = Duration.TicksPerQuarter * 2 / 3;
-        
+
         var notes = new[]
         {
             (start: 0L, note: new Note(Duration.FromTicks(tripletTicks))),
@@ -421,7 +421,7 @@ public class SequenceLayoutTests
         // Create a pattern that doesn't match any tuplet but divides evenly
         int elemTicks = 100;
         int count = 5;
-        
+
         var notes = Enumerable.Range(0, count)
             .Select(i => ((long)elemTicks * i, new Note(Duration.FromTicks(elemTicks))))
             .ToArray();
@@ -457,7 +457,7 @@ public class SequenceLayoutTests
         // Should have notes + rests for all gaps
         Assert.True(result.Count >= 4); // At least the 4 notes
         Assert.Contains(result, r => r.entity is Rest);
-        
+
         // Verify sequence is continuous (no missing time)
         for (int i = 1; i < result.Count; i++)
         {
@@ -506,7 +506,7 @@ public class SequenceLayoutTests
         var result = SequenceLayout.InsertRests(notes, allowSplitTuplets: true);
 
         var firstNote = (Note)result[0].entity;
-        
+
         // Should have triplet tick duration
         Assert.Equal(tripletTicks, firstNote.Duration.Ticks);
     }
@@ -521,7 +521,7 @@ public class SequenceLayoutTests
         int pitch = 60; // Middle C
         int velocity = 100;
         int channel = 5;
-        
+
         var notes = new[]
         {
             (start: 0L, note: new Note(DurationFactory.Quarter(), pitch, velocity, channel))
@@ -592,7 +592,7 @@ public class SequenceLayoutTests
 
         // Should sort correctly (negative first)
         var result = SequenceLayout.InsertRests(notes);
-        
+
         Assert.Equal(2, result.Count);
         Assert.Equal(-480L, result[0].start);
         Assert.Equal(0L, result[1].start);

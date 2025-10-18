@@ -113,7 +113,7 @@ public class DurationFactoryTests
     {
         var triplet = new Tuplet(3, 2); // 3 in space of 2
         var dur = DurationFactory.Tuplet(BaseNoteValue.Quarter, triplet);
-        
+
         // Quarter triplet: (480 * 2) / 3 = 320
         Assert.Equal(320, dur.Ticks);
     }
@@ -123,7 +123,7 @@ public class DurationFactoryTests
     {
         var quintuplet = new Tuplet(5, 4); // 5 in space of 4
         var dur = DurationFactory.Tuplet(BaseNoteValue.Sixteenth, quintuplet);
-        
+
         // Sixteenth quintuplet: (120 * 4) / 5 = 96
         Assert.Equal(96, dur.Ticks);
     }
@@ -133,7 +133,7 @@ public class DurationFactoryTests
     {
         var triplet = new Tuplet(3, 2);
         var dur = DurationFactory.Tuplet(BaseNoteValue.Quarter, triplet, dots: 1);
-        
+
         // Quarter triplet = 320, dotted = 320 + 160 = 480
         Assert.Equal(480, dur.Ticks);
     }
@@ -306,7 +306,7 @@ public class DurationSequenceUtilsTests
     {
         var customTuplets = new[] { new Tuplet(5, 4) }; // Quintuplet
         var quintupletRest = RestFactory.Tuplet(BaseNoteValue.Sixteenth, new Tuplet(5, 4));
-        
+
         var seq = new IDurationEntity[] { quintupletRest };
 
         var result = DurationSequenceUtils.NormalizeRests(seq, additionalTuplets: customTuplets);
@@ -385,7 +385,7 @@ public class BaseNoteValueExtensionsTests
     {
         var (num, den) = BaseNoteValue.DoubleWhole.GetFraction();
         var whole = BaseNoteValue.Whole.GetFraction();
-        
+
         // DoubleWhole (2/1) should be twice Whole (1/1)
         Assert.Equal(2 * whole.Item1, num * whole.Item2);
     }
@@ -406,7 +406,7 @@ public class BaseNoteValueExtensionsTests
         {
             var prev = values[i - 1].GetFraction();
             var curr = values[i].GetFraction();
-            
+
             // Current should be half of previous
             Assert.Equal(prev.Item1 * curr.Item2, prev.Item2 * curr.Item1 * 2);
         }
@@ -445,7 +445,7 @@ public class TupletTests
     {
         var direct = new Tuplet(3, 2);
         var created = Tuplet.Create(3, 2);
-        
+
         Assert.Equal(direct.ActualCount, created.ActualCount);
         Assert.Equal(direct.NormalCount, created.NormalCount);
     }
@@ -462,7 +462,7 @@ public class TupletTests
     {
         var triplet = new Tuplet(3, 2);
         var rational = triplet.FactorRational;
-        
+
         Assert.Equal(2, rational.Numerator);
         Assert.Equal(3, rational.Denominator);
     }
@@ -528,7 +528,7 @@ public class RationalFactorTests
     {
         var rf1 = new RationalFactor(3, 4);
         var rf2 = RationalFactor.FromFraction(3, 4);
-        
+
         Assert.Equal(rf1.Numerator, rf2.Numerator);
         Assert.Equal(rf1.Denominator, rf2.Denominator);
     }
@@ -543,7 +543,7 @@ public class RationalFactorTests
         var a = new RationalFactor(1, 4);
         var b = new RationalFactor(1, 4);
         var result = a + b;
-        
+
         Assert.Equal(1, result.Numerator);
         Assert.Equal(2, result.Denominator);
     }
@@ -554,7 +554,7 @@ public class RationalFactorTests
         var a = new RationalFactor(1, 2); // 1/2
         var b = new RationalFactor(1, 3); // 1/3
         var result = a + b;
-        
+
         // 1/2 + 1/3 = 3/6 + 2/6 = 5/6
         Assert.Equal(5, result.Numerator);
         Assert.Equal(6, result.Denominator);
@@ -566,7 +566,7 @@ public class RationalFactorTests
         var a = new RationalFactor(1, 4);
         var b = new RationalFactor(3, 4);
         var result = a + b;
-        
+
         // 1/4 + 3/4 = 4/4 = 1/1
         Assert.Equal(1, result.Numerator);
         Assert.Equal(1, result.Denominator);
@@ -582,7 +582,7 @@ public class RationalFactorTests
         var a = new RationalFactor(2, 3);
         var b = new RationalFactor(3, 4);
         var result = a * b;
-        
+
         // 2/3 * 3/4 = 6/12 = 1/2
         Assert.Equal(1, result.Numerator);
         Assert.Equal(2, result.Denominator);
@@ -593,7 +593,7 @@ public class RationalFactorTests
     {
         var a = new RationalFactor(3, 4);
         var result = a * 2;
-        
+
         // 3/4 * 2 = 6/4 = 3/2
         Assert.Equal(3, result.Numerator);
         Assert.Equal(2, result.Denominator);
@@ -604,7 +604,7 @@ public class RationalFactorTests
     {
         var a = new RationalFactor(3, 4);
         var result = a * 0;
-        
+
         Assert.Equal(0, result.Numerator);
         Assert.Equal(1, result.Denominator);
     }
@@ -618,7 +618,7 @@ public class RationalFactorTests
     {
         var a = new RationalFactor(3, 4);
         var result = a / 2;
-        
+
         // 3/4 / 2 = 3/8
         Assert.Equal(3, result.Numerator);
         Assert.Equal(8, result.Denominator);
@@ -629,7 +629,7 @@ public class RationalFactorTests
     {
         var a = new RationalFactor(6, 4);
         var result = a / 2;
-        
+
         // 6/4 / 2 = 6/8 = 3/4
         Assert.Equal(3, result.Numerator);
         Assert.Equal(4, result.Denominator);
@@ -651,7 +651,7 @@ public class RationalFactorTests
     {
         var a = new RationalFactor(3, 4);
         var b = new RationalFactor(6, 8); // Simplifies to 3/4
-        
+
         Assert.True(a.Equals(b));
     }
 
@@ -660,7 +660,7 @@ public class RationalFactorTests
     {
         var a = new RationalFactor(3, 4);
         var b = new RationalFactor(2, 3);
-        
+
         Assert.False(a.Equals(b));
     }
 
@@ -669,7 +669,7 @@ public class RationalFactorTests
     {
         var a = new RationalFactor(3, 4);
         var b = new RationalFactor(6, 8);
-        
+
         Assert.Equal(a.GetHashCode(), b.GetHashCode());
     }
 
@@ -717,14 +717,14 @@ public class DurationAdvancedTests
     [Fact]
     public void FromBase_NegativeDots_ThrowsArgumentOutOfRange()
     {
-        Assert.Throws<ArgumentOutOfRangeException>(() => 
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
             Duration.FromBase(BaseNoteValue.Quarter, dots: -1));
     }
 
     [Fact]
     public void FromBase_TooManyDots_ThrowsArgumentException()
     {
-        Assert.Throws<ArgumentException>(() => 
+        Assert.Throws<ArgumentException>(() =>
             Duration.FromBase(BaseNoteValue.Quarter, dots: 4));
     }
 
@@ -738,7 +738,7 @@ public class DurationAdvancedTests
         var quarter = DurationFactory.Quarter();
         var eighth = DurationFactory.Eighth();
         var result = quarter + eighth;
-        
+
         Assert.Equal(Duration.TicksPerQuarter + Duration.TicksPerQuarter / 2, result.Ticks);
     }
 
@@ -748,7 +748,7 @@ public class DurationAdvancedTests
         var quarter = DurationFactory.Quarter();
         var zero = Duration.FromTicks(0);
         var result = quarter + zero;
-        
+
         Assert.Equal(quarter.Ticks, result.Ticks);
     }
 
@@ -761,7 +761,7 @@ public class DurationAdvancedTests
     {
         var dur = DurationFactory.Quarter();
         var success = dur.TryAsSimple(out var baseValue, out var dots);
-        
+
         Assert.True(success);
         Assert.Equal(BaseNoteValue.Quarter, baseValue);
         Assert.Equal(0, dots);
@@ -772,7 +772,7 @@ public class DurationAdvancedTests
     {
         var dur = DurationFactory.Half(dots: 1);
         var success = dur.TryAsSimple(out var baseValue, out var dots);
-        
+
         Assert.True(success);
         Assert.Equal(BaseNoteValue.Half, baseValue);
         Assert.Equal(1, dots);
@@ -783,7 +783,7 @@ public class DurationAdvancedTests
     {
         var dur = DurationFactory.Tuplet(BaseNoteValue.Quarter, new Tuplet(3, 2));
         var success = dur.TryAsSimple(out _, out _);
-        
+
         Assert.False(success);
     }
 
@@ -792,7 +792,7 @@ public class DurationAdvancedTests
     {
         var dur = Duration.FromTicks(500); // Not a standard note value
         var success = dur.TryAsSimple(out _, out _);
-        
+
         Assert.False(success);
     }
 
@@ -805,7 +805,7 @@ public class DurationAdvancedTests
     {
         var a = DurationFactory.Quarter();
         var b = DurationFactory.Quarter();
-        
+
         Assert.True(a.Equals(b));
     }
 
@@ -814,7 +814,7 @@ public class DurationAdvancedTests
     {
         var a = DurationFactory.Quarter();
         var b = DurationFactory.Half();
-        
+
         Assert.False(a.Equals(b));
     }
 
@@ -823,7 +823,7 @@ public class DurationAdvancedTests
     {
         var a = DurationFactory.Quarter();
         var b = DurationFactory.Quarter();
-        
+
         Assert.Equal(a.GetHashCode(), b.GetHashCode());
     }
 
@@ -832,7 +832,7 @@ public class DurationAdvancedTests
     {
         var dur = DurationFactory.Quarter();
         var str = dur.ToString();
-        
+
         Assert.Contains("1/4", str);
         Assert.Contains("480", str);
     }

@@ -241,7 +241,7 @@ public class TimePositionTests
     {
         var ts = new TimeSignature(4, 4);
         var pos = new TimePosition(ts, 0);
-        
+
         Assert.Equal(0, pos.AbsoluteTicks);
         Assert.Equal(0, pos.BarBeatTick.Bar);
         Assert.Equal(0, pos.BarBeatTick.Beat);
@@ -253,7 +253,7 @@ public class TimePositionTests
     {
         var ts = new TimeSignature(4, 4);
         var pos = new TimePosition(ts, ts.TicksPerBar);
-        
+
         Assert.Equal(1, pos.BarBeatTick.Bar);
         Assert.Equal(0, pos.BarBeatTick.Beat);
         Assert.Equal(0, pos.BarBeatTick.TickWithinBeat);
@@ -264,7 +264,7 @@ public class TimePositionTests
     {
         var ts = new TimeSignature(4, 4);
         var pos = new TimePosition(ts, ts.TicksPerBeat);
-        
+
         Assert.Equal(0, pos.BarBeatTick.Bar);
         Assert.Equal(1, pos.BarBeatTick.Beat);
         Assert.Equal(0, pos.BarBeatTick.TickWithinBeat);
@@ -275,7 +275,7 @@ public class TimePositionTests
     {
         var ts = new TimeSignature(4, 4);
         var pos = new TimePosition(ts, 100);
-        
+
         Assert.Equal(0, pos.BarBeatTick.Bar);
         Assert.Equal(0, pos.BarBeatTick.Beat);
         Assert.Equal(100, pos.BarBeatTick.TickWithinBeat);
@@ -294,7 +294,7 @@ public class TimePositionTests
         var ts = new TimeSignature(4, 4);
         var bbt = new BarBeatTick(1, 2, 100);
         var pos = TimePosition.FromBarBeatTick(ts, bbt);
-        
+
         long expected = ts.TicksPerBar + 2 * ts.TicksPerBeat + 100;
         Assert.Equal(expected, pos.AbsoluteTicks);
         Assert.Equal(bbt, pos.BarBeatTick);
@@ -305,7 +305,7 @@ public class TimePositionTests
     {
         var ts = new TimeSignature(4, 4);
         var bbt = new BarBeatTick(0, 4, 0); // Beat 4 in 4/4 is invalid (0-3 valid)
-        
+
         Assert.Throws<ArgumentOutOfRangeException>(() => TimePosition.FromBarBeatTick(ts, bbt));
     }
 
@@ -314,7 +314,7 @@ public class TimePositionTests
     {
         var ts = new TimeSignature(4, 4);
         var bbt = new BarBeatTick(0, 0, ts.TicksPerBeat);
-        
+
         Assert.Throws<ArgumentOutOfRangeException>(() => TimePosition.FromBarBeatTick(ts, bbt));
     }
 
@@ -324,9 +324,9 @@ public class TimePositionTests
         var ts = new TimeSignature(4, 4);
         var pos = new TimePosition(ts, 0);
         var dur = DurationFactory.Quarter();
-        
+
         var newPos = pos.Add(dur);
-        
+
         Assert.Equal(dur.Ticks, newPos.AbsoluteTicks);
         Assert.Equal(0, newPos.BarBeatTick.Bar);
         Assert.Equal(1, newPos.BarBeatTick.Beat);
@@ -338,7 +338,7 @@ public class TimePositionTests
         var ts = new TimeSignature(4, 4);
         var pos = new TimePosition(ts, 100);
         var str = pos.ToString();
-        
+
         Assert.Contains("0:0+100", str);
         Assert.Contains("100 ticks", str);
     }
@@ -353,7 +353,7 @@ public class TupletPatternsTests
     public void Generate_DefaultParams_GeneratesTuplets()
     {
         var tuplets = TupletPatterns.Generate().ToList();
-        
+
         Assert.NotEmpty(tuplets);
         Assert.Contains(tuplets, t => t.ActualCount == 3 && t.NormalCount == 2); // Triplet
     }
@@ -362,7 +362,7 @@ public class TupletPatternsTests
     public void Generate_ExcludesSameActualAndNormal()
     {
         var tuplets = TupletPatterns.Generate().ToList();
-        
+
         Assert.DoesNotContain(tuplets, t => t.ActualCount == t.NormalCount);
     }
 
@@ -370,7 +370,7 @@ public class TupletPatternsTests
     public void Generate_CustomRange_LimitsCorrectly()
     {
         var tuplets = TupletPatterns.Generate(maxActual: 5, maxNormal: 4).ToList();
-        
+
         Assert.All(tuplets, t => Assert.True(t.ActualCount <= 5));
         Assert.All(tuplets, t => Assert.True(t.NormalCount <= 4));
     }
@@ -379,7 +379,7 @@ public class TupletPatternsTests
     public void Generate_ContainsCommonTuplets()
     {
         var tuplets = TupletPatterns.Generate().ToList();
-        
+
         // Common tuplets
         Assert.Contains(tuplets, t => t.ActualCount == 3 && t.NormalCount == 2); // Triplet
         Assert.Contains(tuplets, t => t.ActualCount == 5 && t.NormalCount == 4); // Quintuplet
@@ -396,7 +396,7 @@ public class MidiNoteEventTests
     public void Constructor_StoresAllProperties()
     {
         var evt = new MidiNoteEvent(1, 60, 100, 480, true);
-        
+
         Assert.Equal(1, evt.Channel);
         Assert.Equal(60, evt.Pitch);
         Assert.Equal(100, evt.Velocity);
@@ -408,7 +408,7 @@ public class MidiNoteEventTests
     public void Constructor_NoteOff_IsNoteOnFalse()
     {
         var evt = new MidiNoteEvent(0, 64, 0, 960, false);
-        
+
         Assert.False(evt.IsNoteOn);
         Assert.Equal(0, evt.Velocity);
     }
@@ -418,7 +418,7 @@ public class MidiNoteEventTests
     {
         var evt = new MidiNoteEvent(0, 60, 100, 0, true);
         var str = evt.ToString();
-        
+
         Assert.Contains("On", str);
         Assert.Contains("p60", str);
         Assert.Contains("v100", str);
@@ -429,7 +429,7 @@ public class MidiNoteEventTests
     {
         var evt = new MidiNoteEvent(0, 60, 0, 480, false);
         var str = evt.ToString();
-        
+
         Assert.Contains("Off", str);
     }
 }
@@ -443,7 +443,7 @@ public class MidiNoteBuilderTests
     public void BuildSingle_GeneratesNoteOnAndOff()
     {
         var events = MidiNoteBuilder.BuildSingle(0, 60, 100, 0, DurationFactory.Quarter()).ToList();
-        
+
         Assert.Equal(2, events.Count);
         Assert.True(events[0].IsNoteOn);
         Assert.False(events[1].IsNoteOn);
@@ -454,7 +454,7 @@ public class MidiNoteBuilderTests
     {
         var dur = DurationFactory.Quarter();
         var events = MidiNoteBuilder.BuildSingle(0, 60, 100, 0, dur).ToList();
-        
+
         Assert.Equal(0, events[0].Tick);
         Assert.Equal(dur.Ticks, events[1].Tick);
     }
@@ -463,7 +463,7 @@ public class MidiNoteBuilderTests
     public void BuildSingle_NoteOffVelocityZero()
     {
         var events = MidiNoteBuilder.BuildSingle(0, 60, 100, 0, DurationFactory.Quarter()).ToList();
-        
+
         Assert.Equal(0, events[1].Velocity);
     }
 
@@ -477,7 +477,7 @@ public class MidiNoteBuilderTests
         };
 
         var events = MidiNoteBuilder.BuildMany(notes).ToList();
-        
+
         Assert.Equal(4, events.Count);
         // Events should be sorted by tick
         Assert.True(events[0].Tick <= events[1].Tick);
@@ -495,7 +495,7 @@ public class MidiNoteBuilderTests
         };
 
         var events = MidiNoteBuilder.BuildMany(notes).ToList();
-        
+
         // At tick 480, NoteOn (pitch 64) should come before NoteOff (pitch 60) due to ThenBy(!e.IsNoteOn) sorting
         var tick480Events = events.Where(e => e.Tick == 480).ToList();
         Assert.Equal(2, tick480Events.Count);
@@ -514,7 +514,7 @@ public class TimeSignatureMapTests
     {
         var ts = new TimeSignature(4, 4);
         var map = new TimeSignatureMap(ts);
-        
+
         Assert.Equal(ts, map.GetAt(0));
     }
 
@@ -524,9 +524,9 @@ public class TimeSignatureMapTests
         var ts1 = new TimeSignature(4, 4);
         var ts2 = new TimeSignature(3, 4);
         var map = new TimeSignatureMap(ts1);
-        
+
         map.AddChange(1920, ts2);
-        
+
         Assert.Equal(ts1, map.GetAt(0));
         Assert.Equal(ts2, map.GetAt(1920));
     }
@@ -535,8 +535,8 @@ public class TimeSignatureMapTests
     public void AddChange_NegativeTick_ThrowsArgumentOutOfRange()
     {
         var map = new TimeSignatureMap(new TimeSignature(4, 4));
-        
-        Assert.Throws<ArgumentOutOfRangeException>(() => 
+
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
             map.AddChange(-1, new TimeSignature(3, 4)));
     }
 
@@ -547,10 +547,10 @@ public class TimeSignatureMapTests
         var ts2 = new TimeSignature(3, 4);
         var ts3 = new TimeSignature(6, 8);
         var map = new TimeSignatureMap(ts1);
-        
+
         map.AddChange(1920, ts2);
         map.AddChange(1920, ts3); // Replace
-        
+
         Assert.Equal(ts3, map.GetAt(1920));
     }
 
@@ -561,7 +561,7 @@ public class TimeSignatureMapTests
         var ts2 = new TimeSignature(3, 4);
         var map = new TimeSignatureMap(ts1);
         map.AddChange(1920, ts2);
-        
+
         Assert.Equal(ts1, map.GetAt(1000));
     }
 
@@ -572,7 +572,7 @@ public class TimeSignatureMapTests
         var ts2 = new TimeSignature(3, 4);
         var map = new TimeSignatureMap(ts1);
         map.AddChange(1920, ts2);
-        
+
         Assert.Equal(ts2, map.GetAt(2000));
     }
 
@@ -585,7 +585,7 @@ public class TimeSignatureMapTests
         var map = new TimeSignatureMap(ts1);
         map.AddChange(1920, ts2);
         map.AddChange(3840, ts3);
-        
+
         Assert.Equal(ts1, map.GetAt(1000));
         Assert.Equal(ts2, map.GetAt(2500));
         Assert.Equal(ts3, map.GetAt(4000));
@@ -598,9 +598,9 @@ public class TimeSignatureMapTests
         var ts2 = new TimeSignature(3, 4);
         var map = new TimeSignatureMap(ts1);
         map.AddChange(1920, ts2);
-        
+
         var pos = map.ToPosition(2000);
-        
+
         Assert.Equal(ts2, pos.Signature);
         Assert.Equal(2000, pos.AbsoluteTicks);
     }

@@ -65,7 +65,7 @@ public class UncoveredUtilityTests
         var preset = QuantizePresets.Straight16;
         long tick = 100;
         int ticksPerBar = 1920;
-        
+
         // Apply should process the tick (exact value doesn't matter, just that it runs)
         var result = QuantizePresets.Apply(preset, tick, ticksPerBar);
         Assert.True(result >= 0);
@@ -75,15 +75,15 @@ public class UncoveredUtilityTests
     public void TupletPatterns_Generate_ProducesTuplets()
     {
         var tuplets = TupletPatterns.Generate(maxActual: 5, maxNormal: 4).ToList();
-        
+
         Assert.NotEmpty(tuplets);
-        
+
         // Should generate tuplets where actual != normal
         foreach (var tuplet in tuplets)
         {
             Assert.NotEqual(tuplet.ActualCount, tuplet.NormalCount);
         }
-        
+
         // Verify some specific tuplets exist
         Assert.Contains(tuplets, t => t.ActualCount == 3 && t.NormalCount == 2); // triplet
         Assert.Contains(tuplets, t => t.ActualCount == 5 && t.NormalCount == 4); // quintuplet
@@ -93,7 +93,7 @@ public class UncoveredUtilityTests
     public void TupletPatterns_Generate_RespectsMaxLimits()
     {
         var tuplets = TupletPatterns.Generate(maxActual: 3, maxNormal: 3).ToList();
-        
+
         // All tuplets should have actual <= 3 and normal <= 3
         Assert.All(tuplets, t =>
         {

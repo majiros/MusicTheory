@@ -76,16 +76,16 @@ public class AccidentalTests
     public void Accidental_Notation_CanBeChanged()
     {
         var acc = new Accidental(1);
-        
+
         Accidental.Notation = AccidentalNotation.Unicode;
         Assert.Equal("♯", acc.ToString());
-        
+
         Accidental.Notation = AccidentalNotation.ASCII;
         Assert.Equal("#", acc.ToString());
-        
+
         Accidental.Notation = AccidentalNotation.ASCII_X;
         Assert.Equal("#", acc.ToString());
-        
+
         // Reset to default
         Accidental.Notation = AccidentalNotation.Unicode;
     }
@@ -96,7 +96,7 @@ public class AccidentalTests
         Accidental.Notation = AccidentalNotation.Unicode;
         var pitch = new SpelledPitch(Letter.C, new Accidental(1));
         Assert.Equal("C♯", pitch.ToString());
-        
+
         var flatPitch = new SpelledPitch(Letter.B, new Accidental(-1));
         Assert.Equal("B♭", flatPitch.ToString());
     }
@@ -113,7 +113,7 @@ public class PcScaleTests
     {
         var degrees = new[] { new PitchClass(0), new PitchClass(2), new PitchClass(4) };
         var scale = new PcScale("Test Scale", degrees);
-        
+
         Assert.Equal("Test Scale", scale.Name);
         Assert.Equal(3, scale.Degrees.Length);
         Assert.Contains(scale.Degrees, d => d.Pc == 0);
@@ -123,7 +123,7 @@ public class PcScaleTests
     public void PcScale_Contains_DetectsPitchClass()
     {
         var scale = PcScaleLibrary.Major; // C major: 0,2,4,5,7,9,11
-        
+
         Assert.True(scale.Contains(new PitchClass(0))); // C
         Assert.True(scale.Contains(new PitchClass(4))); // E
         Assert.False(scale.Contains(new PitchClass(1))); // C#
@@ -135,7 +135,7 @@ public class PcScaleTests
     {
         var degrees = new[] { new PitchClass(0), new PitchClass(2) };
         var scale = new PcScale("Test", degrees);
-        
+
         var str = scale.ToString();
         Assert.Contains("Test", str);
         Assert.Contains("0", str);
@@ -147,7 +147,7 @@ public class PcScaleTests
     {
         var cMajor = PcScaleLibrary.Major; // 0,2,4,5,7,9,11
         var dMajor = cMajor.Transposed(2); // Should be 2,4,6,7,9,11,1
-        
+
         Assert.Contains("Root: 2", dMajor.Name);
         Assert.Contains(dMajor.Degrees, d => d.Pc == 2); // D
         Assert.Contains(dMajor.Degrees, d => d.Pc == 6); // F#
@@ -159,7 +159,7 @@ public class PcScaleTests
     {
         var scale = PcScaleLibrary.Major;
         var names = scale.GetJapaneseDegreeNames();
-        
+
         Assert.Equal(7, names.Length);
         Assert.Equal("主音", names[0]);
         Assert.Equal("導音", names[6]);
@@ -170,9 +170,9 @@ public class PcScaleTests
     {
         var scale = PcScaleLibrary.Major;
         var root = new SpelledPitch(Letter.C, new Accidental(0));
-        
+
         var spelledDegrees = scale.GetSpelledDegreesWithNames(root).ToList();
-        
+
         Assert.Equal(7, spelledDegrees.Count);
         Assert.Equal("主音", spelledDegrees[0].Item2);
     }
@@ -182,7 +182,7 @@ public class PcScaleTests
     {
         var major = PcScaleLibrary.Major;
         var semitones = major.GetSemitoneSet();
-        
+
         Assert.Equal(7, semitones.Count);
         Assert.Contains(0, semitones); // C
         Assert.Contains(4, semitones); // E
@@ -193,7 +193,7 @@ public class PcScaleTests
     public void PcScale_IScale_ContainsSemitone_ChecksMembership()
     {
         IScale scale = PcScaleLibrary.Major;
-        
+
         Assert.True(scale.ContainsSemitone(0)); // C
         Assert.True(scale.ContainsSemitone(12)); // C (octave equivalent)
         Assert.False(scale.ContainsSemitone(1)); // C#

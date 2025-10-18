@@ -121,7 +121,7 @@ public class PcScaleLibraryTests
     {
         var modes = PcScaleLibrary.ChurchModes;
         Assert.Equal(7, modes.Length);
-        
+
         var names = modes.Select(m => m.Name).ToList();
         Assert.Contains("Ionian", names);
         Assert.Contains("Dorian", names);
@@ -146,7 +146,7 @@ public class PcScaleLibraryTests
         var wholeTone = PcScaleLibrary.WholeTone;
         Assert.Equal("Whole Tone", wholeTone.Name);
         Assert.Equal(6, wholeTone.Degrees.Length);
-        
+
         // All degrees should be 2 semitones apart
         for (int i = 0; i < wholeTone.Degrees.Length; i++)
         {
@@ -183,9 +183,9 @@ public class PcScaleLibraryTests
     {
         var pc = new PitchClass(0); // C
         var scales = PcScaleLibrary.FindScalesContaining(pc).ToList();
-        
+
         Assert.NotEmpty(scales);
-        
+
         // C should be in Major scale
         Assert.Contains(scales, s => s.Name == "Major");
     }
