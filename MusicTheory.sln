@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{9B3E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicTheory.Cli", "Samples\MusicTheory.Cli\MusicTheory.Cli.csproj", "{A6F3C2B1-6E45-4FB0-9B5A-73AF1D4C9E20}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicTheory.IntegrationTests", "Tests\MusicTheory.IntegrationTests\MusicTheory.IntegrationTests.csproj", "{ED39990B-23BE-4DF9-B4AB-16160360BBE7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,10 @@ Global
 		{A6F3C2B1-6E45-4FB0-9B5A-73AF1D4C9E20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6F3C2B1-6E45-4FB0-9B5A-73AF1D4C9E20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6F3C2B1-6E45-4FB0-9B5A-73AF1D4C9E20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED39990B-23BE-4DF9-B4AB-16160360BBE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED39990B-23BE-4DF9-B4AB-16160360BBE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED39990B-23BE-4DF9-B4AB-16160360BBE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED39990B-23BE-4DF9-B4AB-16160360BBE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,5 +52,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{6DA07914-2EE5-4082-82DC-2434163EF681} = {0AFBEFAB-6922-4089-AAD1-D30A3C63DB50}
 		{A6F3C2B1-6E45-4FB0-9B5A-73AF1D4C9E20} = {9B3E2C35-6C0A-4F1E-B8C2-5D2B5E1D7F9A}
+		{ED39990B-23BE-4DF9-B4AB-16160360BBE7} = {0AFBEFAB-6922-4089-AAD1-D30A3C63DB50}
 	EndGlobalSection
 EndGlobal
