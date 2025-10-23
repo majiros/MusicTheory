@@ -1015,9 +1015,14 @@ var (_, cadences) = ProgressionAnalyzer.AnalyzeWithDetailedCadences(seq, key, op
 # ビルド
 dotnet build -c Release
 
-# テスト
+# テスト（すべて: ユニットテスト + 統合テスト）
 dotnet test -c Release --nologo
+
+# 統合テストのみ実行
+dotnet test -c Release --nologo --filter "FullyQualifiedName~IntegrationTests"
 ```
+
+**統合テスト**: エンドツーエンドの和声解析フローを検証する統合テストは `Tests/MusicTheory.IntegrationTests` に配置されています。詳細は [INTEGRATION_TESTING.md](INTEGRATION_TESTING.md) を参照してください。
 
 VS Code のタスク（.vscode/tasks.json がある環境）:
 
