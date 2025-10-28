@@ -2,8 +2,8 @@
 
 ![.NET 8](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet) ![C#](https://img.shields.io/badge/C%23-Library-blue?logo=c-sharp) [![CI](https://github.com/majiros/MusicTheory/actions/workflows/ci.yml/badge.svg)](https://github.com/majiros/MusicTheory/actions/workflows/ci.yml) [![.NET CI](https://github.com/majiros/MusicTheory/actions/workflows/dotnet.yml/badge.svg)](https://github.com/majiros/MusicTheory/actions/workflows/dotnet.yml) [![Test & Coverage](https://github.com/majiros/MusicTheory/actions/workflows/test.yml/badge.svg)](https://github.com/majiros/MusicTheory/actions/workflows/test.yml) [![coverage-pages](https://github.com/majiros/MusicTheory/actions/workflows/coverage-pages.yml/badge.svg)](https://github.com/majiros/MusicTheory/actions/workflows/coverage-pages.yml) [![docs-lint](https://github.com/majiros/MusicTheory/actions/workflows/docs-lint.yml/badge.svg)](https://github.com/majiros/MusicTheory/actions/workflows/docs-lint.yml) [![coverage: combined](https://majiros.github.io/MusicTheory/badge_combined.svg)](https://majiros.github.io/MusicTheory/index.html) [![coverage: line](https://majiros.github.io/MusicTheory/badge_linecoverage.svg)](https://majiros.github.io/MusicTheory/index.html) [![coverage: branch](https://majiros.github.io/MusicTheory/badge_branchcoverage.svg)](https://majiros.github.io/MusicTheory/index.html) [![coverage: method](https://majiros.github.io/MusicTheory/badge_methodcoverage.svg)](https://majiros.github.io/MusicTheory/index.html)
 
-<!-- 🎯 Coverage Achievement: 84.8% (915 tests) | Phase 18 milestone completed 2025-10-18 -->
-<!-- カバレッジバッジは GitHub Pages に公開されたバッジ SVG を参照しています (75%+ gate enforced)。
+<!-- 🎯 Coverage Achievement: 85.2% (936 tests) | v1.2.0 milestone 2025-10-28 -->
+<!-- カバレッジバッジは GitHub Pages に公開されたバッジ SVG を参照しています (76%+ gate enforced)。
 詳細: COVERAGE_ACHIEVEMENT.md | 学習記録: LESSONS_LEARNED.md -->
 
 コード/スケール/インターバル基礎と和音解析 (Chord Analyzer) を含む .NET 8 ライブラリです。
@@ -1595,11 +1595,11 @@ dotnet test -c Release --nologo --no-build
 - カバレッジHTML生成: 「coverage: html (simple)」「coverage: full stable」
   - CIのWindowsジョブでは HTML/XmlSummary に加えて Badges(SVG) も生成し、同じアーティファクトに含めます。
 
-### カバレッジゲート（>= 75%）
+### カバレッジゲート（>= 76%）
 
 - ローカル（VS Code タスク）
-  - `coverage: full+check stable` を実行すると、Release ビルド → 安定設定でのカバレッジ収集 → HTML 生成 → しきい値チェック（75%）までを一括実行します。
-  - 単体チェックのみは `coverage: check (75%)`（直近の `Tests/MusicTheory.Tests/TestResults/**/coverage.cobertura.xml` から算出）。
+  - `coverage: full+check stable` を実行すると、Release ビルド → 安定設定でのカバレッジ収集 → HTML 生成 → しきい値チェック（76%）までを一括実行します。
+  - 単体チェックのみは `coverage: check (76%)`（直近の `Tests/MusicTheory.Tests/TestResults/**/coverage.cobertura.xml` から算出）。
 
 - ローカル（PowerShell 手動）
 

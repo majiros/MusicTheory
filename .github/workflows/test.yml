@@ -76,10 +76,10 @@ jobs:
         echo "percentage=$COVERAGE_PERCENT" >> $GITHUB_OUTPUT
         echo "Coverage: $COVERAGE_PERCENT%"
         
-    - name: Check coverage threshold (75%)
+    - name: Check coverage threshold (76%)
       run: |
         COVERAGE=${{ steps.coverage.outputs.percentage }}
-        THRESHOLD=75.0
+        THRESHOLD=76.0
         if (( $(echo "$COVERAGE < $THRESHOLD" | bc -l) )); then
           echo "❌ Coverage $COVERAGE% is below threshold $THRESHOLD%"
           exit 1
@@ -103,8 +103,8 @@ jobs:
           const comment = `## 📊 Code Coverage Report
           
           **Coverage:** ${coverage}%
-          **Threshold:** 75.0%
-          **Status:** ${coverage >= 75.0 ? '✅ PASS' : '❌ FAIL'}
+          **Threshold:** 76.0%
+          **Status:** ${coverage >= 76.0 ? '✅ PASS' : '❌ FAIL'}
           
           [View detailed coverage report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
           `;

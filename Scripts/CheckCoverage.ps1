@@ -1,5 +1,5 @@
 param(
-    [double]$Threshold = 75.0,
+    [double]$Threshold = 76.0,
     [string]$SummaryPath = 'Tests/MusicTheory.Tests/TestResults/coverage-report/Summary.xml',
     [string]$CoberturaRoot = 'Tests/MusicTheory.Tests/TestResults'
 )
