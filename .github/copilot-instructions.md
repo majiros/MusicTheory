@@ -30,6 +30,19 @@ v1.1.0 統合テスト基盤セッション（2025-10-23）:
  - [x] テスト総数: 928（単体915 + 統合13）
  - [x] CI/CD で統合テスト自動実行確認（全パス）
 
+v1.2.0 カバレッジ向上セッション（2025-10-28）:
+ - [x] ModulationDetectionTests.cs 作成（8テスト、234行、全パス）
+ - [x] FluentAssertions API 修正（HaveCountGreaterOrEqualTo → HaveCountGreaterThanOrEqualTo）
+ - [x] KeyEstimator 保守的挙動に対応した柔軟なアサーション調整
+ - [x] カバレッジ測定（84.8% → 85.2%、+0.4% 向上）
+ - [x] テスト総数: 936（単体915 + 統合21）
+ - [x] カバレッジゲート引き上げ（75% → 76%）
+ - [x] CHANGELOG.md 更新（v1.2.0 エントリ追加）
+ - [x] README/Scripts/CI ワークフローのゲート更新（76%）
+ - [x] Git コミット（d088238, f0eedb9）
+ - [x] GitHub にプッシュ、v1.2.0 タグ作成、Release 公開
+ - [x] リリースURL: https://github.com/majiros/MusicTheory/releases/tag/v1.2.0
+
 - [x] Clarify Project Requirements
 - [x] Scaffold the Project
 - [x] Customize the Project
