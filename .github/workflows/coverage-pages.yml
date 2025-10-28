@@ -60,12 +60,12 @@ jobs:
             -targetdir:"site/coverage" \
             -reporttypes:"Html;XmlSummary;Badges"
 
-      - name: Enforce Coverage >= 75% before publish
+      - name: Enforce Coverage >= 76% before publish
         shell: bash
         run: |
           # Parse line coverage from Summary.xml
           coverage=$(grep -oP '(?<=<Linecoverage>)[0-9.]+' site/coverage/Summary.xml)
-          threshold=75.0
+          threshold=76.0
 
           echo "Line coverage: ${coverage}% (threshold: ${threshold}%)"
 
