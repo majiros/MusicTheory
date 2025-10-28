@@ -24,8 +24,11 @@ v1.1.0 統合テスト基盤セッション（2025-10-23）:
  - [x] カバレッジ測定（84.8%、パス重複のため増加なし）
  - [x] INTEGRATION_TESTING.md 作成（実装ガイド、338行）
  - [x] README 更新（統合テスト情報追加）
- - [x] Git コミット（f84bab9, 5edb3fc, 031edee）
+ - [x] CHANGELOG 更新（v1.1.0 エントリ追加）
+ - [x] Git コミット（f84bab9, 5edb3fc, 031edee, 22953bc, 27f35f3）
+ - [x] GitHub にプッシュ、v1.1.0 タグ作成、Release 公開
  - [x] テスト総数: 928（単体915 + 統合13）
+ - [x] CI/CD で統合テスト自動実行確認（全パス）
 
 - [x] Clarify Project Requirements
 - [x] Scaffold the Project
