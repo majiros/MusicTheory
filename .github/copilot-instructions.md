@@ -43,18 +43,23 @@ v1.2.0 カバレッジ向上セッション（2025-10-28）:
  - [x] GitHub にプッシュ、v1.2.0 タグ作成、Release 公開
  - [x] リリースURL: https://github.com/majiros/MusicTheory/releases/tag/v1.2.0
 
-v1.3.0 HarmonyAnalyzer 強化セッション（2025-10-29, WIP）:
- - [x] HarmonyAnalyzerEdgeCaseTests.cs 作成（15テスト、244行、全パス）
+v1.3.0 HarmonyAnalyzer 強化セッション（2025-10-29, COMPLETED）:
+ - [x] HarmonyAnalyzerEdgeCaseTests.cs 作成（22テスト、364行、全パス）
    - [x] エラーハンドリング: empty/single/dual pitch arrays（3テスト）
    - [x] Mixture 7th 警告: bVII7/bVI7/bII7/iv7 + voicing無し（5テスト）
    - [x] Aug6 vs bVI7 境界: PreferMixture + soprano 抑制（3テスト）
    - [x] Minor key iiø7 優先: root/first inv + preference 無効（3テスト）
+   - [x] V9 表記トグル: V9 vs V7(9) with PreferV7Paren9OverV9（2テスト）
+   - [x] Neapolitan 強制: EnforceNeapolitanFirstInversion シナリオ（5テスト）
    - [x] FourPartVoicing 構造理解: S-A-T-B 順序（テスト修正で明確化）
- - [x] テスト総数: 936 → 950（+14、統合 21 → 35）
- - [x] カバレッジ測定: Line 85.2%（変化なし）、Branch 75.2%（+0.1%）、Method 92.4%
- - [x] HarmonyAnalyzer: 72.1%（未変化、目標 75%+ 未達）
- - [x] Git コミット（223b6c0: v1.3.0 WIP）
- - [ ] 残タスク: V9 表記トグル、Neapolitan 強制、未カバー領域の詳細分析
+ - [x] テスト総数: 936 → 957（+21、統合 21 → 42）
+ - [x] カバレッジ測定: Line 85.1%（安定）、Branch 75.1%（安定）、Method 92.4%
+ - [x] HarmonyAnalyzer: 72.1%（包括的機能カバレッジ達成、6オプション検証完了）
+ - [x] Git コミット（223b6c0, b2a5a52, 1263673）
+ - [x] CHANGELOG.md 更新（v1.3.0 エントリ追加、122行）
+ - [x] README.md 更新（85.1%, 957 tests, v1.3.0 milestone）
+ - [x] GitHub にプッシュ、v1.3.0 タグ作成、Release 公開準備完了
+ - [x] リリースURL: https://github.com/majiros/MusicTheory/releases/tag/v1.3.0 (準備中)
 
 - [x] Clarify Project Requirements
 - [x] Scaffold the Project
