@@ -285,4 +285,145 @@ public class HarmonyAnalyzerEdgeCaseTests
         (result.RomanText!.Contains("iiø") || result.RomanText!.Contains("vii") || result.RomanText!.Contains("/")).Should().BeTrue(
             "should allow secondary interpretation when PreferDiatonicIiHalfDimInMinor is false");
     }
+
+    [Fact]
+    public void AnalyzeTriad_V9_DefaultNotation_ReturnsV9()
+    {
+        // Arrange: V9 in C major (G-B-D-F-A), 5th omitted: G-B-F-A
+        var key = new Key(60, true); // C major
+        var pcs = new[] { Pc(67), Pc(71), Pc(65), Pc(69) }; // G-B-F-A (V9 omit 5)
+        var options = new HarmonyOptions
+        {
+            PreferV7Paren9OverV9 = false // default: V9 notation
+        };
+
+        // Act
+        var result = HarmonyAnalyzer.AnalyzeTriad(pcs, key, options);
+
+        // Assert
+        result.Success.Should().BeTrue();
+        result.RomanText.Should().Be("V9", "PreferV7Paren9OverV9=false should produce V9 notation");
+        result.Roman.Should().Be(RomanNumeral.V);
+    }
+
+    [Fact]
+    public void AnalyzeTriad_V9_ParenNotation_ReturnsV7Paren9()
+    {
+        // Arrange: Same V9, but prefer V7(9) notation
+        var key = new Key(60, true); // C major
+        var pcs = new[] { Pc(67), Pc(71), Pc(65), Pc(69) }; // G-B-F-A
+        var options = new HarmonyOptions
+        {
+            PreferV7Paren9OverV9 = true
+        };
+
+        // Act
+        var result = HarmonyAnalyzer.AnalyzeTriad(pcs, key, options);
+
+        // Assert
+        result.Success.Should().BeTrue();
+        result.RomanText.Should().Be("V7(9)", "PreferV7Paren9OverV9=true should produce V7(9) notation");
+        result.Roman.Should().Be(RomanNumeral.V);
+    }
+
+    [Fact]
+    public void AnalyzeTriad_Neapolitan_EnforceN6_RootToN6()
+    {
+        // Arrange: bII in C major (Db-F-Ab), root position bass=Db
+        var key = new Key(60, true); // C major
+        var pcs = new[] { Pc(61), Pc(65), Pc(68) }; // Db-F-Ab
+        var voicing = new FourPartVoicing(S: 81, A: 77, T: 73, B: 61); // SATB: Db-Ab-F-Db, bass=Db (root)
+        var options = new HarmonyOptions
+        {
+            EnforceNeapolitanFirstInversion = true
+        };
+
+        // Act
+        var result = HarmonyAnalyzer.AnalyzeTriad(pcs, key, options, voicing: voicing);
+
+        // Assert
+        result.Success.Should().BeTrue();
+        result.RomanText.Should().Be("bII6", "EnforceNeapolitanFirstInversion should relabel bII → bII6");
+        result.Warnings.Should().Contain(w => w.Contains("typical resolution to V"), "resolution hint should still appear");
+    }
+
+    [Fact]
+    public void AnalyzeTriad_Neapolitan_EnforceN6_Already6_Unchanged()
+    {
+        // Arrange: bII6 (already first inversion), bass=F
+        var key = new Key(60, true); // C major
+        var pcs = new[] { Pc(61), Pc(65), Pc(68) }; // Db-F-Ab
+        var voicing = new FourPartVoicing(S: 81, A: 77, T: 73, B: 65); // SATB: Db-Ab-F-F, bass=F (first inv)
+        var options = new HarmonyOptions
+        {
+            EnforceNeapolitanFirstInversion = true
+        };
+
+        // Act
+        var result = HarmonyAnalyzer.AnalyzeTriad(pcs, key, options, voicing: voicing);
+
+        // Assert
+        result.Success.Should().BeTrue();
+        result.RomanText.Should().Be("bII6", "already bII6 should remain unchanged");
+    }
+
+    [Fact]
+    public void AnalyzeTriad_Neapolitan_EnforceN6_64_ToN6()
+    {
+        // Arrange: bII64, bass=Ab (fifth)
+        var key = new Key(60, true); // C major
+        var pcs = new[] { Pc(61), Pc(65), Pc(68) }; // Db-F-Ab
+        var voicing = new FourPartVoicing(S: 86, A: 80, T: 68, B: 68); // SATB: D-Ab-Ab-Ab, bass=Ab (64)
+        var options = new HarmonyOptions
+        {
+            EnforceNeapolitanFirstInversion = true
+        };
+
+        // Act
+        var result = HarmonyAnalyzer.AnalyzeTriad(pcs, key, options, voicing: voicing);
+
+        // Assert
+        result.Success.Should().BeTrue();
+        result.RomanText.Should().Be("bII6", "EnforceNeapolitanFirstInversion should relabel bII64 → bII6");
+    }
+
+    [Fact]
+    public void AnalyzeTriad_Neapolitan_NoEnforce_PreservesInversion()
+    {
+        // Arrange: bII root position, but enforcement disabled
+        var key = new Key(60, true); // C major
+        var pcs = new[] { Pc(61), Pc(65), Pc(68) }; // Db-F-Ab
+        var voicing = new FourPartVoicing(S: 81, A: 77, T: 73, B: 61); // bass=Db (root)
+        var options = new HarmonyOptions
+        {
+            EnforceNeapolitanFirstInversion = false
+        };
+
+        // Act
+        var result = HarmonyAnalyzer.AnalyzeTriad(pcs, key, options, voicing: voicing);
+
+        // Assert
+        result.Success.Should().BeTrue();
+        result.RomanText.Should().Be("bII", "without enforcement, root position should be preserved");
+        result.Warnings.Should().Contain(w => w.Contains("prefer bII6"), "warning should recommend bII6");
+    }
+
+    [Fact]
+    public void AnalyzeTriad_Neapolitan_NoVoicing_EnforceN6_StillApplies()
+    {
+        // Arrange: bII without voicing (pedagogical scenario)
+        var key = new Key(60, true); // C major
+        var pcs = new[] { Pc(61), Pc(65), Pc(68) }; // Db-F-Ab
+        var options = new HarmonyOptions
+        {
+            EnforceNeapolitanFirstInversion = true
+        };
+
+        // Act
+        var result = HarmonyAnalyzer.AnalyzeTriad(pcs, key, options, voicing: null);
+
+        // Assert
+        result.Success.Should().BeTrue();
+        result.RomanText.Should().Be("bII6", "EnforceNeapolitanFirstInversion should apply even without voicing");
+    }
 }
