@@ -43,6 +43,19 @@ v1.2.0 カバレッジ向上セッション（2025-10-28）:
  - [x] GitHub にプッシュ、v1.2.0 タグ作成、Release 公開
  - [x] リリースURL: https://github.com/majiros/MusicTheory/releases/tag/v1.2.0
 
+v1.3.0 HarmonyAnalyzer 強化セッション（2025-10-29, WIP）:
+ - [x] HarmonyAnalyzerEdgeCaseTests.cs 作成（15テスト、244行、全パス）
+   - [x] エラーハンドリング: empty/single/dual pitch arrays（3テスト）
+   - [x] Mixture 7th 警告: bVII7/bVI7/bII7/iv7 + voicing無し（5テスト）
+   - [x] Aug6 vs bVI7 境界: PreferMixture + soprano 抑制（3テスト）
+   - [x] Minor key iiø7 優先: root/first inv + preference 無効（3テスト）
+   - [x] FourPartVoicing 構造理解: S-A-T-B 順序（テスト修正で明確化）
+ - [x] テスト総数: 936 → 950（+14、統合 21 → 35）
+ - [x] カバレッジ測定: Line 85.2%（変化なし）、Branch 75.2%（+0.1%）、Method 92.4%
+ - [x] HarmonyAnalyzer: 72.1%（未変化、目標 75%+ 未達）
+ - [x] Git コミット（223b6c0: v1.3.0 WIP）
+ - [ ] 残タスク: V9 表記トグル、Neapolitan 強制、未カバー領域の詳細分析
+
 - [x] Clarify Project Requirements
 - [x] Scaffold the Project
 - [x] Customize the Project
