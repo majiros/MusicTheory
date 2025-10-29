@@ -74,7 +74,9 @@ v1.4.0 ProgressionAnalyzer Advanced Tests（2025-10-29, COMPLETED）:
  - [x] テスト品質向上: 既存コードパスの検証強化、回帰テスト信頼性向上
  - [x] CHANGELOG.md 更新（v1.4.0 エントリ追加、Impact Assessment 追記）
  - [x] README.md 更新（85.1%, 973 tests, v1.4.0 milestone）
- - [x] Git コミット準備中
+ - [x] Git コミット（64f2873）、プッシュ完了
+ - [x] GitHub にプッシュ、v1.4.0 タグ作成、Release 公開完了
+ - [x] リリースURL: https://github.com/majiros/MusicTheory/releases/tag/v1.4.0
 
 - [x] Clarify Project Requirements
 - [x] Scaffold the Project
