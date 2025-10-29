@@ -55,11 +55,26 @@ v1.3.0 HarmonyAnalyzer 強化セッション（2025-10-29, COMPLETED）:
  - [x] テスト総数: 936 → 957（+21、統合 21 → 42）
  - [x] カバレッジ測定: Line 85.1%（安定）、Branch 75.1%（安定）、Method 92.4%
  - [x] HarmonyAnalyzer: 72.1%（包括的機能カバレッジ達成、6オプション検証完了）
- - [x] Git コミット（223b6c0, b2a5a52, 1263673）
+ - [x] Git コミット（223b6c0, b2a5a52, 1263673, 89b8c7c）
  - [x] CHANGELOG.md 更新（v1.3.0 エントリ追加、122行）
  - [x] README.md 更新（85.1%, 957 tests, v1.3.0 milestone）
- - [x] GitHub にプッシュ、v1.3.0 タグ作成、Release 公開準備完了
- - [x] リリースURL: https://github.com/majiros/MusicTheory/releases/tag/v1.3.0 (準備中)
+ - [x] GitHub にプッシュ、v1.3.0 タグ作成、Release 公開完了
+ - [x] リリースURL: https://github.com/majiros/MusicTheory/releases/tag/v1.3.0
+
+v1.4.0 ProgressionAnalyzer Advanced Tests（2025-10-29, COMPLETED）:
+ - [x] ProgressionAdvancedTests.cs 作成（16テスト、480行、全パス）
+   - [x] Jazz Progressions: iii-vi-ii-V-I, 連続 ii-V, 7thコード（3テスト）
+   - [x] Modal Interchange: I-bIII-bVII-IV, 複雑なミクスチャー（2テスト）
+   - [x] Deceptive/Plagal Cadences: V-vi, IV-I, 複合カデンツ（3テスト）
+   - [x] Minor Key Progressions: i-iv-V-i, ii°, 調性的導音（3テスト）
+   - [x] Edge Cases: 空/単和音/非調性/オプション/voicings（5テスト）
+ - [x] テスト総数: 957 → 973（+16、統合 42 → 58）
+ - [x] カバレッジ測定: Line 85.1%（横ばい）、Branch 75.3%（+0.2%）、Method 92.4%
+ - [x] ProgressionAnalyzer: 70.7%（実用的な音楽進行シナリオ網羅完了）
+ - [x] テスト品質向上: 既存コードパスの検証強化、回帰テスト信頼性向上
+ - [x] CHANGELOG.md 更新（v1.4.0 エントリ追加、Impact Assessment 追記）
+ - [x] README.md 更新（85.1%, 973 tests, v1.4.0 milestone）
+ - [x] Git コミット準備中
 
 - [x] Clarify Project Requirements
 - [x] Scaffold the Project

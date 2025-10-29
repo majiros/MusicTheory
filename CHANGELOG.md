@@ -2,6 +2,91 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0] - 2025-10-29
+
+### 🎼 Progression Analyzer Advanced Integration Tests
+
+v1.4.0 では、ProgressionAnalyzer の高度な音楽進行パターンを検証する統合テストを追加しました。Jazz進行、Modal Interchange、Deceptive/Plagal Cadences、Minor Key Progressions、Edge Casesを網羅し、実用的な音楽理論シナリオの正確性を保証します。
+
+#### Highlights
+
+- **Integration Tests**: +16 tests (42 → 58 total integration tests, **+38% 増加**)
+- **Test Total**: 973 tests (915 unit + 58 integration, 2 skipped)
+- **Coverage**: **85.1%** (Line), **75.3%** (Branch, +0.2%), 92.4% (Method)
+- **Test Quality**: 100% pass rate, real-world musical progression validation
+
+#### New ProgressionAnalyzer Advanced Tests
+
+16テストを `ProgressionAdvancedTests.cs` に実装（480 lines）:
+
+##### 1. Jazz Progressions (3 tests)
+
+- **Extended Jazz Progression**: iii-vi-ii-V-I sequence validation
+- **Circle Progression**: ii-V-iii-vi-ii-V-I double ii-V pattern
+- **Seventh Chord Jazz**: ii7-V7-Imaj7 with explicit 7th chords
+
+##### 2. Modal Interchange (2 tests)
+
+- **Basic Mixture**: I-bIII-bVII-IV (borrowed chords from parallel minor)
+- **Complex Mixture**: I-iv-bVII-bIII-iv-V-I (multiple borrowed chords)
+
+##### 3. Deceptive and Plagal Cadences (3 tests)
+
+- **Deceptive Cadence**: V-vi resolution detection
+- **Plagal Cadence**: IV-I (Amen cadence) recognition
+- **Mixed Cadences**: I-V-vi-IV-V-I (deceptive + authentic in sequence)
+
+##### 4. Minor Key Progressions (3 tests)
+
+- **Classic Minor**: i-iv-V-i progression in A minor
+- **Diminished ii°**: i-ii°-V-i with diatonic ii° chord
+- **Raised Leading Tone**: i-VI-III-VII-i (harmonic minor scale)
+
+##### 5. Edge Cases (5 tests)
+
+- **Empty Progression**: Empty input handling
+- **Single Chord**: No cadence detection for isolated chord
+- **Unanalyzable Chord**: Chromatic cluster graceful handling
+- **Harmony Options**: `PreferV7Paren9OverV9` notation toggle
+- **Explicit Voicings**: `FourPartVoicing` data utilization
+
+#### Technical Implementation Details
+
+- **File**: `Tests/MusicTheory.IntegrationTests/ProgressionAdvancedTests.cs`
+- **Test pattern**: `ProgressionAnalyzer.Analyze()` with realistic chord sequences
+- **Assertion targets**:
+  - Chord count and Roman numeral labels
+  - Cadence detection (type, index, perfect/imperfect classification)
+  - Harmony option effects on output formatting
+- **Key coverage**: Real-world usage patterns (not just synthetic examples)
+
+#### Coverage Analysis
+
+- **Line coverage**: 85.1% (stable from v1.3.0, validates existing code paths)
+- **Branch coverage**: 75.3% (+0.2% from v1.3.0, improved conditional handling)
+- **ProgressionAnalyzer**: 70.7% (comprehensive functional validation despite percentage)
+- **Quality insight**: New tests validated **existing harmony analysis correctness** for complex progressions
+- **Uncovered areas**: Modulation edge cases, exotic cadence detection thresholds (rare scenarios)
+
+#### Test Execution Performance
+
+- **Integration tests**: 58 tests passing in ~21ms (avg ~0.36ms per test)
+- **Unit tests**: 915 tests passing in ~13s
+- **Total execution**: < 14s for full test suite (973 tests)
+
+#### Impact Assessment
+
+このリリースで追加された16テストは、ProgressionAnalyzer が以下を正確に処理することを保証します:
+- **Jazz 和声**: 拡張カデンツ、連続二次ドミナント、7thコード表記
+- **Modal Mixture**: 並行調からの借用和音（bIII, bVII, iv）
+- **カデンツ検出**: Deceptive (V-vi), Plagal (IV-I), 複合カデンツ
+- **短調進行**: 減和音、調性的導音、和声的短音階
+- **エッジケース**: 空入力、単和音、非調性クラスタ、オプション動作
+
+既存のカバレッジ率（85.1%）は横ばいですが、**テストの質と網羅性**が大幅に向上しました。これにより、将来のリファクタリングやAPIの拡張に対する回帰テストの信頼性が確保されます。
+
+---
+
 ## [1.3.0] - 2025-10-29
 
 ### 🧪 HarmonyAnalyzer Edge Case Testing & Option Coverage
