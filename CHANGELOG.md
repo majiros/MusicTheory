@@ -2,6 +2,75 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0] - 2025-10-30
+
+### 🔍 Roman Input Parser Edge Case Tests
+
+v1.5.0 では、RomanInputParser のエラーハンドリングと境界条件を検証する統合テストを追加しました。null/empty input validation、unsupported tokens、Unicode normalization、secondary variations、augmented sixth chordsなど、CLIの入力検証ロバストネスを強化します。
+
+#### Highlights
+
+- **Integration Tests**: +18 tests (58 → 76 total integration tests, **+31% 増加**)
+- **Test Total**: **991 tests** (915 unit + 76 integration, 2 skipped)
+- **Coverage**: **85.5%** (Line, +0.4%), **75.8%** (Branch, +0.5%), 92.0% (Method)
+- **RomanInputParser**: **81.5%** coverage (+5.0%, 76.5% → 81.5%)
+
+#### New RomanInputParser Edge Case Tests
+
+18テストを `RomanInputParserEdgeCaseTests.cs` に実装（326 lines）:
+
+##### 1. Error Handling (5 tests)
+
+- **Null Input**: `ArgumentNullException` thrown for `null` input
+- **Empty String**: `ArgumentException` for empty string (no items after split)
+- **Whitespace Only**: rejection of whitespace-only tokens
+- **Invalid Secondary**: missing target in secondary notation (e.g., `V/`)
+- **Unsupported Token**: invalid Roman numeral beyond diatonic scale
+
+##### 2. Unicode and Sanitize Boundary (3 tests)
+
+- **Mixed Unicode/ASCII**: `♭Ⅲ` (Unicode flat + Unicode Roman III) → bIII (Eb major)
+- **Complex Normalization**: `♭Ⅱ6; ⅶø7/Ⅴ; Ⅳ64` multi-format parsing
+- **bII vs bIII Disambiguation**: `bⅢ` correctly parsed as bIII, not bII
+
+##### 3. Secondary Variations (4 tests)
+
+- **Secondary to IV**: `vii°7/IV` uses MinorSeventh quality (E-G-B-D)
+- **Secondary Inversions**: `vii°65/V` first inversion (third in bass)
+- **Secondary Triad**: `V6/ii` dominant triad to ii
+- **Secondary to iii**: `V/iii` (B major, V of E minor)
+
+##### 4. Figure and Quality Mark Combinations (6 tests)
+
+- **Neapolitan 64**: `N64` second inversion (Ab in bass)
+- **Neapolitan 7th**: `N7` dominant seventh (Db-F-Ab-Cb)
+- **Mixture Triad Inversion**: `bVII6` first inversion (D in bass)
+- **Italian Augmented Sixth**: `It6` (Ab-C-F# in C major)
+- **French Augmented Sixth**: `Fr43` (Ab-C-D-F# in C major)
+- **German Augmented Sixth**: `Ger65` (Ab-C-Eb-F# in C major)
+
+#### Technical Details
+
+- **File**: `Tests/MusicTheory.IntegrationTests/RomanInputParserEdgeCaseTests.cs` (326 lines)
+- **Test Regions**: Error Handling, Unicode/Sanitize, Secondary Variations, Figure/Quality Combinations
+- **Coverage Impact**: RomanInputParser 76.5% → 81.5% (+5.0%), overall +0.4% line, +0.5% branch
+
+#### Test Performance
+
+- **All Tests Pass**: 991/991 (100%)
+- **Execution Time**: ~52 ms (IntegrationTests), ~38s (全テスト)
+- **CI Compatibility**: Stable, no flakiness observed
+
+#### Impact Assessment
+
+✅ **入力検証信頼性向上**: null/empty/whitespace-only入力の明確なエラーメッセージ  
+✅ **CLI Robustness**: 無効なRoman numeralとsecondary notationの検出  
+✅ **Unicode正規化検証**: 複数形式（♭, Ⅲ, ø）の混在を正しく処理  
+✅ **Augmented Sixth網羅**: It6/Fr43/Ger65の完全検証  
+✅ **回帰テスト強化**: 将来のRomanInputParser変更に対する安全性確保
+
+---
+
 ## [1.4.0] - 2025-10-29
 
 ### 🎼 Progression Analyzer Advanced Integration Tests

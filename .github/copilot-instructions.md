@@ -78,6 +78,21 @@ v1.4.0 ProgressionAnalyzer Advanced Tests（2025-10-29, COMPLETED）:
  - [x] GitHub にプッシュ、v1.4.0 タグ作成、Release 公開完了
  - [x] リリースURL: https://github.com/majiros/MusicTheory/releases/tag/v1.4.0
 
+v1.5.0 RomanInputParser Edge Case Tests（2025-10-30, IN PROGRESS）:
+ - [x] RomanInputParserEdgeCaseTests.cs 作成（18テスト、326行、全パス）
+   - [x] Error Handling: null/empty/whitespace/invalid secondary/unsupported token（5テスト）
+   - [x] Unicode/Sanitize: ♭Ⅲ 正規化、複雑な混在形式、bII vs bIII 曖昧性解消（3テスト）
+   - [x] Secondary Variations: vii°7/IV, vii°65/V, V6/ii, V/iii（4テスト）
+   - [x] Figure+Quality: N64/N7, bVII6, It6/Fr43/Ger65（6テスト）
+ - [x] テスト総数: 973 → 991（+18、統合 58 → 76）
+ - [x] カバレッジ測定: Line 85.5%（+0.4%）、Branch 75.8%（+0.5%）、Method 92.0%
+ - [x] RomanInputParser: 81.5%（+5.0%、76.5% → 81.5%）
+ - [x] CHANGELOG.md 更新（v1.5.0 エントリ追加、Impact Assessment）
+ - [x] README.md 更新（85.5%, 991 tests, v1.5.0 milestone）
+ - [ ] Git コミット、プッシュ
+ - [ ] GitHub にプッシュ、v1.5.0 タグ作成、Release 公開
+ - [ ] リリースURL: （公開後に記載）
+
 - [x] Clarify Project Requirements
 - [x] Scaffold the Project
 - [x] Customize the Project
